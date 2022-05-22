@@ -100,6 +100,9 @@ import (
 
 	"demo-onechain/docs"
 
+	citizenmodule "demo-onechain/x/citizen"
+	citizenmodulekeeper "demo-onechain/x/citizen/keeper"
+	citizenmoduletypes "demo-onechain/x/citizen/types"
 	demoonechainmodule "demo-onechain/x/demoonechain"
 	demoonechainmodulekeeper "demo-onechain/x/demoonechain/keeper"
 	demoonechainmoduletypes "demo-onechain/x/demoonechain/types"
@@ -158,6 +161,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		demoonechainmodule.AppModuleBasic{},
+		citizenmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -170,6 +174,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		citizenmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -231,6 +236,8 @@ type App struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
 	DemoonechainKeeper demoonechainmodulekeeper.Keeper
+
+	CitizenKeeper citizenmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -268,6 +275,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		demoonechainmoduletypes.StoreKey,
+		citizenmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -394,6 +402,17 @@ func New(
 	)
 	demoonechainModule := demoonechainmodule.NewAppModule(appCodec, app.DemoonechainKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.CitizenKeeper = *citizenmodulekeeper.NewKeeper(
+		appCodec,
+		keys[citizenmoduletypes.StoreKey],
+		keys[citizenmoduletypes.MemStoreKey],
+		app.GetSubspace(citizenmoduletypes.ModuleName),
+
+		app.BankKeeper,
+		app.AccountKeeper,
+	)
+	citizenModule := citizenmodule.NewAppModule(appCodec, app.CitizenKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -436,6 +455,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		demoonechainModule,
+		citizenModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -464,6 +484,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		demoonechainmoduletypes.ModuleName,
+		citizenmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -488,6 +509,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		demoonechainmoduletypes.ModuleName,
+		citizenmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -517,6 +539,7 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		demoonechainmoduletypes.ModuleName,
+		citizenmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -542,6 +565,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		demoonechainModule,
+		citizenModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -732,6 +756,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(demoonechainmoduletypes.ModuleName)
+	paramsKeeper.Subspace(citizenmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
