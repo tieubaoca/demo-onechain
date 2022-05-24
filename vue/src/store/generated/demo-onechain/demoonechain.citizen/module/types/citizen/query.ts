@@ -2,6 +2,11 @@
 import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../citizen/params";
 import { Owner } from "../citizen/owner";
+import { Citizen } from "../citizen/citizen";
+import {
+  PageRequest,
+  PageResponse,
+} from "../cosmos/base/query/v1beta1/pagination";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -24,6 +29,23 @@ export interface QueryModuleOwnerRequest {}
 
 export interface QueryModuleOwnerResponse {
   owner: string;
+}
+
+export interface QueryGetCitizenRequest {
+  citizenId: string;
+}
+
+export interface QueryGetCitizenResponse {
+  citizen: Citizen | undefined;
+}
+
+export interface QueryAllCitizenRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllCitizenResponse {
+  citizen: Citizen[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -337,6 +359,296 @@ export const QueryModuleOwnerResponse = {
   },
 };
 
+const baseQueryGetCitizenRequest: object = { citizenId: "" };
+
+export const QueryGetCitizenRequest = {
+  encode(
+    message: QueryGetCitizenRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.citizenId !== "") {
+      writer.uint32(10).string(message.citizenId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetCitizenRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetCitizenRequest } as QueryGetCitizenRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizenId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCitizenRequest {
+    const message = { ...baseQueryGetCitizenRequest } as QueryGetCitizenRequest;
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = String(object.citizenId);
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCitizenRequest): unknown {
+    const obj: any = {};
+    message.citizenId !== undefined && (obj.citizenId = message.citizenId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCitizenRequest>
+  ): QueryGetCitizenRequest {
+    const message = { ...baseQueryGetCitizenRequest } as QueryGetCitizenRequest;
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = object.citizenId;
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetCitizenResponse: object = {};
+
+export const QueryGetCitizenResponse = {
+  encode(
+    message: QueryGetCitizenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.citizen !== undefined) {
+      Citizen.encode(message.citizen, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetCitizenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetCitizenResponse,
+    } as QueryGetCitizenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizen = Citizen.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCitizenResponse {
+    const message = {
+      ...baseQueryGetCitizenResponse,
+    } as QueryGetCitizenResponse;
+    if (object.citizen !== undefined && object.citizen !== null) {
+      message.citizen = Citizen.fromJSON(object.citizen);
+    } else {
+      message.citizen = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCitizenResponse): unknown {
+    const obj: any = {};
+    message.citizen !== undefined &&
+      (obj.citizen = message.citizen
+        ? Citizen.toJSON(message.citizen)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCitizenResponse>
+  ): QueryGetCitizenResponse {
+    const message = {
+      ...baseQueryGetCitizenResponse,
+    } as QueryGetCitizenResponse;
+    if (object.citizen !== undefined && object.citizen !== null) {
+      message.citizen = Citizen.fromPartial(object.citizen);
+    } else {
+      message.citizen = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCitizenRequest: object = {};
+
+export const QueryAllCitizenRequest = {
+  encode(
+    message: QueryAllCitizenRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllCitizenRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllCitizenRequest } as QueryAllCitizenRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCitizenRequest {
+    const message = { ...baseQueryAllCitizenRequest } as QueryAllCitizenRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCitizenRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCitizenRequest>
+  ): QueryAllCitizenRequest {
+    const message = { ...baseQueryAllCitizenRequest } as QueryAllCitizenRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCitizenResponse: object = {};
+
+export const QueryAllCitizenResponse = {
+  encode(
+    message: QueryAllCitizenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.citizen) {
+      Citizen.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllCitizenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllCitizenResponse,
+    } as QueryAllCitizenResponse;
+    message.citizen = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizen.push(Citizen.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCitizenResponse {
+    const message = {
+      ...baseQueryAllCitizenResponse,
+    } as QueryAllCitizenResponse;
+    message.citizen = [];
+    if (object.citizen !== undefined && object.citizen !== null) {
+      for (const e of object.citizen) {
+        message.citizen.push(Citizen.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCitizenResponse): unknown {
+    const obj: any = {};
+    if (message.citizen) {
+      obj.citizen = message.citizen.map((e) =>
+        e ? Citizen.toJSON(e) : undefined
+      );
+    } else {
+      obj.citizen = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCitizenResponse>
+  ): QueryAllCitizenResponse {
+    const message = {
+      ...baseQueryAllCitizenResponse,
+    } as QueryAllCitizenResponse;
+    message.citizen = [];
+    if (object.citizen !== undefined && object.citizen !== null) {
+      for (const e of object.citizen) {
+        message.citizen.push(Citizen.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -347,6 +659,10 @@ export interface Query {
   ModuleOwner(
     request: QueryModuleOwnerRequest
   ): Promise<QueryModuleOwnerResponse>;
+  /** Queries a Citizen by index. */
+  Citizen(request: QueryGetCitizenRequest): Promise<QueryGetCitizenResponse>;
+  /** Queries a list of Citizen items. */
+  CitizenAll(request: QueryAllCitizenRequest): Promise<QueryAllCitizenResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -387,6 +703,32 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryModuleOwnerResponse.decode(new Reader(data))
+    );
+  }
+
+  Citizen(request: QueryGetCitizenRequest): Promise<QueryGetCitizenResponse> {
+    const data = QueryGetCitizenRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "Citizen",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetCitizenResponse.decode(new Reader(data))
+    );
+  }
+
+  CitizenAll(
+    request: QueryAllCitizenRequest
+  ): Promise<QueryAllCitizenResponse> {
+    const data = QueryAllCitizenRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "CitizenAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllCitizenResponse.decode(new Reader(data))
     );
   }
 }

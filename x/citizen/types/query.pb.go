@@ -6,7 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	_ "github.com/cosmos/cosmos-sdk/types"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -273,6 +274,190 @@ func (m *QueryModuleOwnerResponse) GetOwner() string {
 	return ""
 }
 
+type QueryGetCitizenRequest struct {
+	CitizenId string `protobuf:"bytes,1,opt,name=citizenId,proto3" json:"citizenId,omitempty"`
+}
+
+func (m *QueryGetCitizenRequest) Reset()         { *m = QueryGetCitizenRequest{} }
+func (m *QueryGetCitizenRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCitizenRequest) ProtoMessage()    {}
+func (*QueryGetCitizenRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5781144943d7d0f3, []int{6}
+}
+func (m *QueryGetCitizenRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCitizenRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCitizenRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCitizenRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCitizenRequest.Merge(m, src)
+}
+func (m *QueryGetCitizenRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCitizenRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCitizenRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCitizenRequest proto.InternalMessageInfo
+
+func (m *QueryGetCitizenRequest) GetCitizenId() string {
+	if m != nil {
+		return m.CitizenId
+	}
+	return ""
+}
+
+type QueryGetCitizenResponse struct {
+	Citizen Citizen `protobuf:"bytes,1,opt,name=citizen,proto3" json:"citizen"`
+}
+
+func (m *QueryGetCitizenResponse) Reset()         { *m = QueryGetCitizenResponse{} }
+func (m *QueryGetCitizenResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCitizenResponse) ProtoMessage()    {}
+func (*QueryGetCitizenResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5781144943d7d0f3, []int{7}
+}
+func (m *QueryGetCitizenResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCitizenResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCitizenResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCitizenResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCitizenResponse.Merge(m, src)
+}
+func (m *QueryGetCitizenResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCitizenResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCitizenResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCitizenResponse proto.InternalMessageInfo
+
+func (m *QueryGetCitizenResponse) GetCitizen() Citizen {
+	if m != nil {
+		return m.Citizen
+	}
+	return Citizen{}
+}
+
+type QueryAllCitizenRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCitizenRequest) Reset()         { *m = QueryAllCitizenRequest{} }
+func (m *QueryAllCitizenRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCitizenRequest) ProtoMessage()    {}
+func (*QueryAllCitizenRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5781144943d7d0f3, []int{8}
+}
+func (m *QueryAllCitizenRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCitizenRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCitizenRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCitizenRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCitizenRequest.Merge(m, src)
+}
+func (m *QueryAllCitizenRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCitizenRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCitizenRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCitizenRequest proto.InternalMessageInfo
+
+func (m *QueryAllCitizenRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllCitizenResponse struct {
+	Citizen    []Citizen           `protobuf:"bytes,1,rep,name=citizen,proto3" json:"citizen"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCitizenResponse) Reset()         { *m = QueryAllCitizenResponse{} }
+func (m *QueryAllCitizenResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCitizenResponse) ProtoMessage()    {}
+func (*QueryAllCitizenResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5781144943d7d0f3, []int{9}
+}
+func (m *QueryAllCitizenResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCitizenResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCitizenResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCitizenResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCitizenResponse.Merge(m, src)
+}
+func (m *QueryAllCitizenResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCitizenResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCitizenResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCitizenResponse proto.InternalMessageInfo
+
+func (m *QueryAllCitizenResponse) GetCitizen() []Citizen {
+	if m != nil {
+		return m.Citizen
+	}
+	return nil
+}
+
+func (m *QueryAllCitizenResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "demoonechain.citizen.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "demoonechain.citizen.QueryParamsResponse")
@@ -280,39 +465,55 @@ func init() {
 	proto.RegisterType((*QueryGetOwnerResponse)(nil), "demoonechain.citizen.QueryGetOwnerResponse")
 	proto.RegisterType((*QueryModuleOwnerRequest)(nil), "demoonechain.citizen.QueryModuleOwnerRequest")
 	proto.RegisterType((*QueryModuleOwnerResponse)(nil), "demoonechain.citizen.QueryModuleOwnerResponse")
+	proto.RegisterType((*QueryGetCitizenRequest)(nil), "demoonechain.citizen.QueryGetCitizenRequest")
+	proto.RegisterType((*QueryGetCitizenResponse)(nil), "demoonechain.citizen.QueryGetCitizenResponse")
+	proto.RegisterType((*QueryAllCitizenRequest)(nil), "demoonechain.citizen.QueryAllCitizenRequest")
+	proto.RegisterType((*QueryAllCitizenResponse)(nil), "demoonechain.citizen.QueryAllCitizenResponse")
 }
 
 func init() { proto.RegisterFile("citizen/query.proto", fileDescriptor_5781144943d7d0f3) }
 
 var fileDescriptor_5781144943d7d0f3 = []byte{
-	// 431 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0x3f, 0x8f, 0xd3, 0x30,
-	0x18, 0xc6, 0x63, 0xa0, 0x95, 0xf0, 0x6d, 0xbe, 0x00, 0x47, 0xe8, 0xe5, 0x50, 0xe0, 0xa4, 0xe3,
-	0xaa, 0xc6, 0xb4, 0x0c, 0x95, 0x18, 0xbb, 0x30, 0x21, 0xda, 0x8e, 0x2c, 0xc8, 0x6d, 0xad, 0x10,
-	0xa9, 0xf1, 0x9b, 0xc6, 0x2e, 0x50, 0x46, 0x84, 0x98, 0x91, 0x98, 0xf8, 0x1c, 0x7c, 0x89, 0x8e,
-	0x95, 0x58, 0x98, 0x10, 0x6a, 0xf9, 0x20, 0x28, 0xb6, 0x53, 0x91, 0xfe, 0x53, 0xb7, 0xf6, 0xf5,
-	0xf3, 0x3c, 0xbf, 0xc7, 0xaf, 0x15, 0x7c, 0x3a, 0x8c, 0x55, 0xfc, 0x91, 0x0b, 0x3a, 0x99, 0xf2,
-	0x6c, 0x16, 0xa6, 0x19, 0x28, 0x20, 0xee, 0x88, 0x27, 0x00, 0x82, 0x0f, 0xdf, 0xb2, 0x58, 0x84,
-	0x56, 0xe1, 0xb9, 0x11, 0x44, 0xa0, 0x05, 0x34, 0xff, 0x65, 0xb4, 0x5e, 0x2d, 0x02, 0x88, 0xc6,
-	0x9c, 0xb2, 0x34, 0xa6, 0x4c, 0x08, 0x50, 0x4c, 0xc5, 0x20, 0xa4, 0x3d, 0xbd, 0x1e, 0x82, 0x4c,
-	0x40, 0xd2, 0x01, 0x93, 0xdc, 0x20, 0xe8, 0xbb, 0xe6, 0x80, 0x2b, 0xd6, 0xa4, 0x29, 0x8b, 0x62,
-	0xa1, 0xc5, 0x56, 0xeb, 0x16, 0x55, 0x52, 0x96, 0xb1, 0xa4, 0x48, 0x58, 0x17, 0x84, 0xf7, 0x82,
-	0x67, 0x66, 0x18, 0xb8, 0x98, 0xf4, 0xf2, 0xb0, 0xae, 0x56, 0xf6, 0xf9, 0x64, 0xca, 0xa5, 0x0a,
-	0x7a, 0xf8, 0xb4, 0x34, 0x95, 0x29, 0x08, 0xc9, 0xc9, 0x73, 0x5c, 0x35, 0x89, 0x67, 0xe8, 0x21,
-	0xba, 0x3a, 0x69, 0xd5, 0xc2, 0x5d, 0xd7, 0x0b, 0x8d, 0xab, 0x73, 0x6b, 0xfe, 0xfb, 0xc2, 0xe9,
-	0x5b, 0x47, 0x70, 0x17, 0xbb, 0x3a, 0xf2, 0x05, 0x57, 0xaf, 0x72, 0x7e, 0x81, 0xea, 0xe2, 0x3b,
-	0x1b, 0x73, 0x0b, 0x6b, 0xe3, 0x8a, 0x1e, 0x58, 0xd6, 0x83, 0xdd, 0x2c, 0x2d, 0xb1, 0x28, 0xa3,
-	0x0f, 0xee, 0xe3, 0x7b, 0x3a, 0xf1, 0x25, 0x8c, 0xa6, 0x63, 0x5e, 0x82, 0x3d, 0xc5, 0x67, 0xdb,
-	0x47, 0x96, 0xe7, 0xe2, 0x0a, 0xac, 0x79, 0xb7, 0xfb, 0xe6, 0x4f, 0xeb, 0xc7, 0x4d, 0x5c, 0xd1,
-	0x16, 0xf2, 0x19, 0xe1, 0xaa, 0xb9, 0x19, 0xb9, 0xda, 0xdd, 0x65, 0x7b, 0x91, 0xde, 0x93, 0x23,
-	0x94, 0x86, 0x1f, 0x5c, 0x7e, 0xfa, 0xf9, 0xf7, 0xdb, 0x8d, 0x0b, 0x72, 0x4e, 0x73, 0x4b, 0xa3,
-	0xf0, 0xd0, 0xf2, 0x5b, 0x92, 0x2f, 0xc8, 0xee, 0x85, 0x5c, 0x1f, 0xc8, 0xde, 0xd8, 0xb2, 0x57,
-	0x3f, 0x4a, 0x6b, 0x9b, 0x3c, 0xd6, 0x4d, 0x7c, 0x52, 0xdb, 0xd3, 0x44, 0x6f, 0x86, 0x7c, 0x47,
-	0xf8, 0xe4, 0xbf, 0x3d, 0x92, 0xc6, 0x01, 0xc4, 0xf6, 0x53, 0x78, 0xe1, 0xb1, 0x72, 0x5b, 0xaa,
-	0xae, 0x4b, 0x5d, 0x92, 0x47, 0x7b, 0x4a, 0x25, 0xda, 0xf3, 0x46, 0x77, 0xeb, 0xb4, 0xe7, 0x4b,
-	0x1f, 0x2d, 0x96, 0x3e, 0xfa, 0xb3, 0xf4, 0xd1, 0xd7, 0x95, 0xef, 0x2c, 0x56, 0xbe, 0xf3, 0x6b,
-	0xe5, 0x3b, 0xaf, 0xcf, 0xcb, 0xee, 0x0f, 0x6b, 0xbf, 0x9a, 0xa5, 0x5c, 0x0e, 0xaa, 0xfa, 0xab,
-	0x78, 0xf6, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x18, 0x75, 0x61, 0x11, 0xcd, 0x03, 0x00, 0x00,
+	// 620 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0xb1, 0x6f, 0xd3, 0x40,
+	0x14, 0xc6, 0x73, 0x85, 0xb4, 0xea, 0xeb, 0x76, 0x4d, 0x43, 0x31, 0x89, 0x5b, 0x19, 0x5a, 0x4a,
+	0xda, 0xd8, 0x34, 0x48, 0x54, 0x42, 0x62, 0x68, 0x91, 0xa8, 0x18, 0x10, 0x69, 0x26, 0xc4, 0x02,
+	0x97, 0xe4, 0x64, 0x2c, 0x39, 0x3e, 0x37, 0x76, 0x80, 0x82, 0x58, 0x10, 0x62, 0x06, 0x31, 0xc1,
+	0xc6, 0x7f, 0xd3, 0xb1, 0x12, 0x0b, 0x13, 0x42, 0x49, 0xff, 0x10, 0x94, 0xbb, 0xe7, 0xd4, 0x4e,
+	0x1c, 0x13, 0x26, 0x3b, 0x2f, 0xdf, 0xf7, 0xbe, 0xdf, 0x45, 0xdf, 0x05, 0x96, 0x5b, 0x4e, 0xe8,
+	0xbc, 0xe5, 0x9e, 0x75, 0xdc, 0xe3, 0xdd, 0x13, 0xd3, 0xef, 0x8a, 0x50, 0xd0, 0x42, 0x9b, 0x77,
+	0x84, 0xf0, 0x78, 0xeb, 0x25, 0x73, 0x3c, 0x13, 0x15, 0x5a, 0xc9, 0x16, 0xc2, 0x76, 0xb9, 0xc5,
+	0x7c, 0xc7, 0x62, 0x9e, 0x27, 0x42, 0x16, 0x3a, 0xc2, 0x0b, 0x94, 0x47, 0xab, 0xb4, 0x44, 0xd0,
+	0x11, 0x81, 0xd5, 0x64, 0x01, 0x57, 0xcb, 0xac, 0x57, 0xbb, 0x4d, 0x1e, 0xb2, 0x5d, 0xcb, 0x67,
+	0xb6, 0xe3, 0x49, 0x31, 0x6a, 0x0b, 0x51, 0xa8, 0xcf, 0xba, 0xac, 0x13, 0x6d, 0x18, 0xa1, 0x88,
+	0xd7, 0x1e, 0xef, 0xe2, 0x70, 0x25, 0x1a, 0xe2, 0x13, 0xc7, 0xc5, 0x68, 0xdc, 0xe1, 0x21, 0x6b,
+	0xb3, 0x90, 0xe1, 0x5c, 0x8f, 0x53, 0x44, 0xf9, 0x2d, 0xe1, 0x8c, 0x92, 0x6d, 0x61, 0x0b, 0xf9,
+	0x6a, 0x0d, 0xdf, 0xd4, 0xd4, 0x28, 0x00, 0x3d, 0x1a, 0x12, 0xd7, 0x25, 0x4e, 0x83, 0x1f, 0xf7,
+	0x78, 0x10, 0x1a, 0x47, 0xb0, 0x9c, 0x98, 0x06, 0xbe, 0xf0, 0x02, 0x4e, 0xef, 0xc1, 0xbc, 0xc2,
+	0x5e, 0x25, 0xeb, 0x64, 0x6b, 0xa9, 0x56, 0x32, 0xd3, 0x7e, 0x2d, 0x53, 0xb9, 0x0e, 0x2e, 0x9f,
+	0xfe, 0x5e, 0xcb, 0x35, 0xd0, 0x61, 0x14, 0xa1, 0x20, 0x57, 0x1e, 0xf2, 0xf0, 0xc9, 0xf0, 0x90,
+	0x51, 0x54, 0x1d, 0x56, 0xc6, 0xe6, 0x18, 0xb6, 0x07, 0x79, 0x39, 0xc0, 0xac, 0x6b, 0xe9, 0x59,
+	0x52, 0x82, 0x51, 0x4a, 0x6f, 0x5c, 0x85, 0x2b, 0x72, 0xe3, 0x63, 0xd1, 0xee, 0xb9, 0x3c, 0x11,
+	0x76, 0x1b, 0x56, 0x27, 0xbf, 0xc2, 0xbc, 0x02, 0xe4, 0xc5, 0x28, 0x6f, 0xb1, 0xa1, 0x3e, 0x18,
+	0x77, 0xa1, 0x18, 0xe1, 0x3d, 0x50, 0x91, 0xb8, 0x8b, 0x96, 0x60, 0x11, 0x21, 0x1e, 0xb5, 0xd1,
+	0x73, 0x31, 0x30, 0x9e, 0x22, 0x44, 0xdc, 0x87, 0x41, 0xf7, 0x61, 0x01, 0x75, 0x78, 0xb4, 0x72,
+	0xfa, 0xd1, 0xd0, 0x87, 0x87, 0x8b, 0x3c, 0xc6, 0x0b, 0x24, 0xda, 0x77, 0xdd, 0x31, 0xa2, 0x87,
+	0x00, 0x17, 0x7d, 0xc3, 0xdd, 0x9b, 0xa6, 0xaa, 0x85, 0x39, 0xac, 0x85, 0xa9, 0x9a, 0x8e, 0xe5,
+	0x30, 0xeb, 0xcc, 0xe6, 0xe8, 0x6d, 0xc4, 0x9c, 0xc6, 0x0f, 0x82, 0xf0, 0xf1, 0x88, 0x34, 0xf8,
+	0x4b, 0xff, 0x0b, 0x4f, 0x0f, 0x13, 0x88, 0x73, 0x12, 0xf1, 0xe6, 0x3f, 0x11, 0x55, 0x76, 0x9c,
+	0xb1, 0x76, 0x9e, 0x87, 0xbc, 0x64, 0xa4, 0x1f, 0x09, 0xcc, 0xab, 0xc6, 0xd1, 0xad, 0x74, 0x96,
+	0xc9, 0x82, 0x6b, 0xb7, 0x66, 0x50, 0xaa, 0x54, 0x63, 0xe3, 0xc3, 0xcf, 0xf3, 0xaf, 0x73, 0x6b,
+	0xb4, 0x6c, 0x0d, 0x2d, 0xd5, 0xc8, 0x63, 0x25, 0x2f, 0x32, 0xfd, 0x44, 0xb0, 0xaf, 0xb4, 0x92,
+	0xb1, 0x7b, 0xac, 0xfd, 0xda, 0xf6, 0x4c, 0x5a, 0x24, 0xb9, 0x21, 0x49, 0x74, 0x5a, 0x9a, 0x42,
+	0x22, 0x1b, 0x4b, 0xbf, 0x11, 0x58, 0x8a, 0xf5, 0x9b, 0x56, 0x33, 0x22, 0x26, 0xaf, 0x88, 0x66,
+	0xce, 0x2a, 0x47, 0xa8, 0x6d, 0x09, 0xb5, 0x41, 0xaf, 0x4f, 0x81, 0xea, 0x48, 0xcf, 0x73, 0xc5,
+	0xf6, 0x9d, 0xc0, 0x02, 0x36, 0x83, 0xee, 0x64, 0x1f, 0x3d, 0xd9, 0x6d, 0xad, 0x3a, 0xa3, 0x1a,
+	0xa9, 0x6a, 0x92, 0x6a, 0x87, 0x56, 0xa6, 0x50, 0x45, 0xcf, 0x77, 0xa3, 0x1b, 0xfb, 0x9e, 0x7e,
+	0x21, 0x00, 0xb8, 0x67, 0xdf, 0x75, 0x33, 0xf9, 0x26, 0xee, 0x5e, 0x26, 0xdf, 0xe4, 0x35, 0x32,
+	0x36, 0x25, 0xdf, 0x3a, 0xd5, 0xb3, 0xf9, 0x0e, 0xf6, 0x4e, 0xfb, 0x3a, 0x39, 0xeb, 0xeb, 0xe4,
+	0x4f, 0x5f, 0x27, 0x9f, 0x07, 0x7a, 0xee, 0x6c, 0xa0, 0xe7, 0x7e, 0x0d, 0xf4, 0xdc, 0xb3, 0x72,
+	0xd2, 0xf8, 0x66, 0x64, 0x0d, 0x4f, 0x7c, 0x1e, 0x34, 0xe7, 0xe5, 0xdf, 0xfb, 0x9d, 0xbf, 0x01,
+	0x00, 0x00, 0xff, 0xff, 0xc3, 0xe0, 0x74, 0xa6, 0xe5, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -333,6 +534,10 @@ type QueryClient interface {
 	Owner(ctx context.Context, in *QueryGetOwnerRequest, opts ...grpc.CallOption) (*QueryGetOwnerResponse, error)
 	// Queries a list of ModuleOwner items.
 	ModuleOwner(ctx context.Context, in *QueryModuleOwnerRequest, opts ...grpc.CallOption) (*QueryModuleOwnerResponse, error)
+	// Queries a Citizen by index.
+	Citizen(ctx context.Context, in *QueryGetCitizenRequest, opts ...grpc.CallOption) (*QueryGetCitizenResponse, error)
+	// Queries a list of Citizen items.
+	CitizenAll(ctx context.Context, in *QueryAllCitizenRequest, opts ...grpc.CallOption) (*QueryAllCitizenResponse, error)
 }
 
 type queryClient struct {
@@ -370,6 +575,24 @@ func (c *queryClient) ModuleOwner(ctx context.Context, in *QueryModuleOwnerReque
 	return out, nil
 }
 
+func (c *queryClient) Citizen(ctx context.Context, in *QueryGetCitizenRequest, opts ...grpc.CallOption) (*QueryGetCitizenResponse, error) {
+	out := new(QueryGetCitizenResponse)
+	err := c.cc.Invoke(ctx, "/demoonechain.citizen.Query/Citizen", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CitizenAll(ctx context.Context, in *QueryAllCitizenRequest, opts ...grpc.CallOption) (*QueryAllCitizenResponse, error) {
+	out := new(QueryAllCitizenResponse)
+	err := c.cc.Invoke(ctx, "/demoonechain.citizen.Query/CitizenAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -378,6 +601,10 @@ type QueryServer interface {
 	Owner(context.Context, *QueryGetOwnerRequest) (*QueryGetOwnerResponse, error)
 	// Queries a list of ModuleOwner items.
 	ModuleOwner(context.Context, *QueryModuleOwnerRequest) (*QueryModuleOwnerResponse, error)
+	// Queries a Citizen by index.
+	Citizen(context.Context, *QueryGetCitizenRequest) (*QueryGetCitizenResponse, error)
+	// Queries a list of Citizen items.
+	CitizenAll(context.Context, *QueryAllCitizenRequest) (*QueryAllCitizenResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -392,6 +619,12 @@ func (*UnimplementedQueryServer) Owner(ctx context.Context, req *QueryGetOwnerRe
 }
 func (*UnimplementedQueryServer) ModuleOwner(ctx context.Context, req *QueryModuleOwnerRequest) (*QueryModuleOwnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModuleOwner not implemented")
+}
+func (*UnimplementedQueryServer) Citizen(ctx context.Context, req *QueryGetCitizenRequest) (*QueryGetCitizenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Citizen not implemented")
+}
+func (*UnimplementedQueryServer) CitizenAll(ctx context.Context, req *QueryAllCitizenRequest) (*QueryAllCitizenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CitizenAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -452,6 +685,42 @@ func _Query_ModuleOwner_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Citizen_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetCitizenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Citizen(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/demoonechain.citizen.Query/Citizen",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Citizen(ctx, req.(*QueryGetCitizenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CitizenAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllCitizenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CitizenAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/demoonechain.citizen.Query/CitizenAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CitizenAll(ctx, req.(*QueryAllCitizenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "demoonechain.citizen.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -467,6 +736,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ModuleOwner",
 			Handler:    _Query_ModuleOwner_Handler,
+		},
+		{
+			MethodName: "Citizen",
+			Handler:    _Query_Citizen_Handler,
+		},
+		{
+			MethodName: "CitizenAll",
+			Handler:    _Query_CitizenAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -638,6 +915,153 @@ func (m *QueryModuleOwnerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetCitizenRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCitizenRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCitizenRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.CitizenId) > 0 {
+		i -= len(m.CitizenId)
+		copy(dAtA[i:], m.CitizenId)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.CitizenId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetCitizenResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCitizenResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCitizenResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Citizen.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCitizenRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCitizenRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCitizenRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCitizenResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCitizenResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCitizenResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Citizen) > 0 {
+		for iNdEx := len(m.Citizen) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Citizen[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -706,6 +1130,62 @@ func (m *QueryModuleOwnerResponse) Size() (n int) {
 	_ = l
 	l = len(m.Owner)
 	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCitizenRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.CitizenId)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCitizenResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Citizen.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllCitizenRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllCitizenResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Citizen) > 0 {
+		for _, e := range m.Citizen {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -1093,6 +1573,377 @@ func (m *QueryModuleOwnerResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Owner = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCitizenRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCitizenRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCitizenRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CitizenId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CitizenId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCitizenResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCitizenResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCitizenResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Citizen", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Citizen.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCitizenRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCitizenRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCitizenRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCitizenResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCitizenResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCitizenResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Citizen", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Citizen = append(m.Citizen, Citizen{})
+			if err := m.Citizen[len(m.Citizen)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

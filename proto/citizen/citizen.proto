@@ -1,0 +1,15 @@
+syntax = "proto3";
+package demoonechain.citizen;
+
+option go_package = "demo-onechain/x/citizen/types";
+import "citizen/metadata.proto"; 
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Citizen {
+  string citizenId = 1; 
+  Metadata metadata = 2; 
+  repeated cosmos.base.v1beta1.Coin assets = 3 [(gogoproto.nullable) = false]; 
+  
+}
+
