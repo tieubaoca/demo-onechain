@@ -24,7 +24,11 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgTransferOwnership = "op_weight_msg_transfer_ownership"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgTransferOwnership int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -57,6 +61,17 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgTransferOwnership int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgTransferOwnership, &weightMsgTransferOwnership, nil,
+		func(_ *rand.Rand) {
+			weightMsgTransferOwnership = defaultWeightMsgTransferOwnership
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgTransferOwnership,
+		citizensimulation.SimulateMsgTransferOwnership(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

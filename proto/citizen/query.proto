@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "citizen/params.proto";
+import "citizen/owner.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "demo-onechain/x/citizen/types";
@@ -15,7 +16,16 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/demo-onechain/citizen/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Owner by index.
+	rpc Owner(QueryGetOwnerRequest) returns (QueryGetOwnerResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/owner";
+	}
+// Queries a list of ModuleOwner items.
+	rpc ModuleOwner(QueryModuleOwnerRequest) returns (QueryModuleOwnerResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/module_owner";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +35,18 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetOwnerRequest {}
+
+message QueryGetOwnerResponse {
+	Owner Owner = 1 [(gogoproto.nullable) = false];
+}
+message QueryModuleOwnerRequest {
+}
+
+message QueryModuleOwnerResponse {
+  string owner = 1;
 }
 
 // this line is used by starport scaffolding # 3

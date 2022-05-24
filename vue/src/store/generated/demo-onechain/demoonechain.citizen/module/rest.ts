@@ -9,10 +9,24 @@
  * ---------------------------------------------------------------
  */
 
+export type CitizenMsgTransferOwnershipResponse = object;
+
+export interface CitizenOwner {
+  owner?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
 export type CitizenParams = object;
+
+export interface CitizenQueryGetOwnerResponse {
+  Owner?: CitizenOwner;
+}
+
+export interface CitizenQueryModuleOwnerResponse {
+  owner?: string;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -229,6 +243,38 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryModuleOwner
+   * @summary Queries a list of ModuleOwner items.
+   * @request GET:/demo-onechain/citizen/module_owner
+   */
+  queryModuleOwner = (params: RequestParams = {}) =>
+    this.request<CitizenQueryModuleOwnerResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/module_owner`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryOwner
+   * @summary Queries a Owner by index.
+   * @request GET:/demo-onechain/citizen/owner
+   */
+  queryOwner = (params: RequestParams = {}) =>
+    this.request<CitizenQueryGetOwnerResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/owner`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

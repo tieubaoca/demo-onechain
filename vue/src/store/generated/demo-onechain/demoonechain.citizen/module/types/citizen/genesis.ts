@@ -1,13 +1,15 @@
 /* eslint-disable */
 import { Params } from "../citizen/params";
+import { Owner } from "../citizen/owner";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "demoonechain.citizen";
 
 /** GenesisState defines the citizen module's genesis state. */
 export interface GenesisState {
-  /** this line is used by starport scaffolding # genesis/proto/state */
   params: Params | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  owner: Owner | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -16,6 +18,9 @@ export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.owner !== undefined) {
+      Owner.encode(message.owner, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -29,6 +34,9 @@ export const GenesisState = {
       switch (tag >>> 3) {
         case 1:
           message.params = Params.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.owner = Owner.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -45,6 +53,11 @@ export const GenesisState = {
     } else {
       message.params = undefined;
     }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = Owner.fromJSON(object.owner);
+    } else {
+      message.owner = undefined;
+    }
     return message;
   },
 
@@ -52,6 +65,8 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.owner !== undefined &&
+      (obj.owner = message.owner ? Owner.toJSON(message.owner) : undefined);
     return obj;
   },
 
@@ -61,6 +76,11 @@ export const GenesisState = {
       message.params = Params.fromPartial(object.params);
     } else {
       message.params = undefined;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = Owner.fromPartial(object.owner);
+    } else {
+      message.owner = undefined;
     }
     return message;
   },
