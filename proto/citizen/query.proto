@@ -7,6 +7,7 @@ import "citizen/params.proto";
 import "citizen/owner.proto";
 import "citizen/citizen.proto";
 import "citizen/citizen_owner.proto";
+import "citizen/citizen_ids.proto";
 // this line is used by starport scaffolding # 1
 import "citizen/metadata.proto";
 import "cosmos/base/v1beta1/coin.proto";
@@ -47,6 +48,16 @@ service Query {
 	// Queries a list of CitizenOwner items.
 	rpc CitizenOwnerAll(QueryAllCitizenOwnerRequest) returns (QueryAllCitizenOwnerResponse) {
 		option (google.api.http).get = "/demo-onechain/citizen/citizen_owner";
+	}
+
+// Queries a CitizenIds by id.
+	rpc CitizenIds(QueryGetCitizenIdsRequest) returns (QueryGetCitizenIdsResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/citizen_ids/{id}";
+	}
+
+	// Queries a list of CitizenIds items.
+	rpc CitizenIdsAll(QueryAllCitizenIdsRequest) returns (QueryAllCitizenIdsResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/citizen_ids";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -106,6 +117,23 @@ message QueryAllCitizenOwnerRequest {
 
 message QueryAllCitizenOwnerResponse {
 	repeated CitizenOwner citizenOwner = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCitizenIdsRequest {
+	uint64 id = 1;
+}
+
+message QueryGetCitizenIdsResponse {
+	CitizenIds CitizenIds = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCitizenIdsRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCitizenIdsResponse {
+	repeated CitizenIds CitizenIds = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

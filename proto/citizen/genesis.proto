@@ -6,6 +6,7 @@ import "citizen/params.proto";
 import "citizen/owner.proto";
 import "citizen/citizen.proto";
 import "citizen/citizen_owner.proto";
+import "citizen/citizen_ids.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "demo-onechain/x/citizen/types";
@@ -16,5 +17,7 @@ message GenesisState {
   Owner owner = 2;
   repeated Citizen citizenList = 3 [(gogoproto.nullable) = false];
   repeated CitizenOwner citizenOwnerList = 4 [(gogoproto.nullable) = false];
+  repeated CitizenIds citizenIdsList = 5 [(gogoproto.nullable) = false];
+  uint64 citizenIdsCount = 6;
   // this line is used by starport scaffolding # genesis/proto/state
 }

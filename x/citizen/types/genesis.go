@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		Owner:            &Owner{Owner: "onechain1hfs42grvajp3d77x7zsf349atctzh0cql3tuhf"},
 		CitizenList:      []Citizen{},
 		CitizenOwnerList: []CitizenOwner{},
+		CitizenIdsList:   []CitizenIds{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -40,6 +41,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for citizenOwner")
 		}
 		citizenOwnerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated ID in citizenIds
+	citizenIdsIdMap := make(map[uint64]bool)
+	citizenIdsCount := gs.GetCitizenIdsCount()
+	for _, elem := range gs.CitizenIdsList {
+		if _, ok := citizenIdsIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for citizenIds")
+		}
+		if elem.Id >= citizenIdsCount {
+			return fmt.Errorf("citizenIds id should be lower or equal than the last id")
+		}
+		citizenIdsIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

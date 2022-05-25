@@ -15,6 +15,12 @@ export interface CitizenCitizen {
   assets?: V1Beta1Coin[];
 }
 
+export interface CitizenCitizenIds {
+  /** @format uint64 */
+  id?: string;
+  citizenIds?: string;
+}
+
 export interface CitizenCitizenOwner {
   citizenId?: string;
   owner?: string;
@@ -38,6 +44,21 @@ export interface CitizenOwner {
  * Params defines the parameters for the module.
  */
 export type CitizenParams = object;
+
+export interface CitizenQueryAllCitizenIdsResponse {
+  CitizenIds?: CitizenCitizenIds[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface CitizenQueryAllCitizenOwnerResponse {
   citizenOwner?: CitizenCitizenOwner[];
@@ -67,6 +88,10 @@ export interface CitizenQueryAllCitizenResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface CitizenQueryGetCitizenIdsResponse {
+  CitizenIds?: CitizenCitizenIds;
 }
 
 export interface CitizenQueryGetCitizenOwnerResponse {
@@ -411,6 +436,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryCitizen = (citizenId: string, params: RequestParams = {}) =>
     this.request<CitizenQueryGetCitizenResponse, RpcStatus>({
       path: `/demo-onechain/citizen/citizen/${citizenId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCitizenIdsAll
+   * @summary Queries a list of CitizenIds items.
+   * @request GET:/demo-onechain/citizen/citizen_ids
+   */
+  queryCitizenIdsAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<CitizenQueryAllCitizenIdsResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/citizen_ids`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCitizenIds
+   * @summary Queries a CitizenIds by id.
+   * @request GET:/demo-onechain/citizen/citizen_ids/{id}
+   */
+  queryCitizenIds = (id: string, params: RequestParams = {}) =>
+    this.request<CitizenQueryGetCitizenIdsResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/citizen_ids/${id}`,
       method: "GET",
       format: "json",
       ...params,

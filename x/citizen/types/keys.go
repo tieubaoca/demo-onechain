@@ -24,3 +24,8 @@ func KeyPrefix(p string) []byte {
 const (
 	OwnerKey = "Owner-value-"
 )
+
+const (
+	CitizenIdsKey      = "CitizenIds-value-"
+	CitizenIdsCountKey = "CitizenIds-count-"
+)

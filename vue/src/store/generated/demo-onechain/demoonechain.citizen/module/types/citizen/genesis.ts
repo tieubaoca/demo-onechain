@@ -1,9 +1,11 @@
 /* eslint-disable */
+import * as Long from "long";
+import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../citizen/params";
 import { Owner } from "../citizen/owner";
 import { Citizen } from "../citizen/citizen";
 import { CitizenOwner } from "../citizen/citizen_owner";
-import { Writer, Reader } from "protobufjs/minimal";
+import { CitizenIds } from "../citizen/citizen_ids";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -12,11 +14,13 @@ export interface GenesisState {
   params: Params | undefined;
   owner: Owner | undefined;
   citizenList: Citizen[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   citizenOwnerList: CitizenOwner[];
+  citizenIdsList: CitizenIds[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  citizenIdsCount: number;
 }
 
-const baseGenesisState: object = {};
+const baseGenesisState: object = { citizenIdsCount: 0 };
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -32,6 +36,12 @@ export const GenesisState = {
     for (const v of message.citizenOwnerList) {
       CitizenOwner.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    for (const v of message.citizenIdsList) {
+      CitizenIds.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.citizenIdsCount !== 0) {
+      writer.uint32(48).uint64(message.citizenIdsCount);
+    }
     return writer;
   },
 
@@ -41,6 +51,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
     message.citizenOwnerList = [];
+    message.citizenIdsList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -58,6 +69,14 @@ export const GenesisState = {
             CitizenOwner.decode(reader, reader.uint32())
           );
           break;
+        case 5:
+          message.citizenIdsList.push(
+            CitizenIds.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.citizenIdsCount = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -70,6 +89,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
     message.citizenOwnerList = [];
+    message.citizenIdsList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -92,6 +112,19 @@ export const GenesisState = {
       for (const e of object.citizenOwnerList) {
         message.citizenOwnerList.push(CitizenOwner.fromJSON(e));
       }
+    }
+    if (object.citizenIdsList !== undefined && object.citizenIdsList !== null) {
+      for (const e of object.citizenIdsList) {
+        message.citizenIdsList.push(CitizenIds.fromJSON(e));
+      }
+    }
+    if (
+      object.citizenIdsCount !== undefined &&
+      object.citizenIdsCount !== null
+    ) {
+      message.citizenIdsCount = Number(object.citizenIdsCount);
+    } else {
+      message.citizenIdsCount = 0;
     }
     return message;
   },
@@ -116,6 +149,15 @@ export const GenesisState = {
     } else {
       obj.citizenOwnerList = [];
     }
+    if (message.citizenIdsList) {
+      obj.citizenIdsList = message.citizenIdsList.map((e) =>
+        e ? CitizenIds.toJSON(e) : undefined
+      );
+    } else {
+      obj.citizenIdsList = [];
+    }
+    message.citizenIdsCount !== undefined &&
+      (obj.citizenIdsCount = message.citizenIdsCount);
     return obj;
   },
 
@@ -123,6 +165,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
     message.citizenOwnerList = [];
+    message.citizenIdsList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -146,9 +189,32 @@ export const GenesisState = {
         message.citizenOwnerList.push(CitizenOwner.fromPartial(e));
       }
     }
+    if (object.citizenIdsList !== undefined && object.citizenIdsList !== null) {
+      for (const e of object.citizenIdsList) {
+        message.citizenIdsList.push(CitizenIds.fromPartial(e));
+      }
+    }
+    if (
+      object.citizenIdsCount !== undefined &&
+      object.citizenIdsCount !== null
+    ) {
+      message.citizenIdsCount = object.citizenIdsCount;
+    } else {
+      message.citizenIdsCount = 0;
+    }
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -160,3 +226,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}
