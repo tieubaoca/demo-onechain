@@ -1,12 +1,13 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Citizen } from "./module/types/citizen/citizen"
+import { CitizenOwner } from "./module/types/citizen/citizen_owner"
 import { Metadata } from "./module/types/citizen/metadata"
 import { Owner } from "./module/types/citizen/owner"
 import { Params } from "./module/types/citizen/params"
 
 
-export { Citizen, Metadata, Owner, Params };
+export { Citizen, CitizenOwner, Metadata, Owner, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -49,9 +50,12 @@ const getDefaultState = () => {
 				ModuleOwner: {},
 				Citizen: {},
 				CitizenAll: {},
+				CitizenOwner: {},
+				CitizenOwnerAll: {},
 				
 				_Structure: {
 						Citizen: getStructure(Citizen.fromPartial({})),
+						CitizenOwner: getStructure(CitizenOwner.fromPartial({})),
 						Metadata: getStructure(Metadata.fromPartial({})),
 						Owner: getStructure(Owner.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -112,6 +116,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.CitizenAll[JSON.stringify(params)] ?? {}
+		},
+				getCitizenOwner: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CitizenOwner[JSON.stringify(params)] ?? {}
+		},
+				getCitizenOwnerAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CitizenOwnerAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -256,6 +272,54 @@ export default {
 				return getters['getCitizenAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryCitizenAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryCitizenOwner({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCitizenOwner( key.citizenId)).data
+				
+					
+				commit('QUERY', { query: 'CitizenOwner', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCitizenOwner', payload: { options: { all }, params: {...key},query }})
+				return getters['getCitizenOwner']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCitizenOwner API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryCitizenOwnerAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCitizenOwnerAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryCitizenOwnerAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'CitizenOwnerAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCitizenOwnerAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getCitizenOwnerAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCitizenOwnerAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

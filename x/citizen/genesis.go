@@ -17,6 +17,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.CitizenList {
 		k.SetCitizen(ctx, elem)
 	}
+	// Set all the citizenOwner
+	for _, elem := range genState.CitizenOwnerList {
+		k.SetCitizenOwner(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -32,6 +36,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 		genesis.Owner = &owner
 	}
 	genesis.CitizenList = k.GetAllCitizen(ctx)
+	genesis.CitizenOwnerList = k.GetAllCitizenOwner(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

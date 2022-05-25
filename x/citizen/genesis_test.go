@@ -25,6 +25,14 @@ func TestGenesis(t *testing.T) {
 				CitizenId: "1",
 			},
 		},
+		CitizenOwnerList: []types.CitizenOwner{
+			{
+				CitizenId: "0",
+			},
+			{
+				CitizenId: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -38,5 +46,6 @@ func TestGenesis(t *testing.T) {
 
 	require.Equal(t, genesisState.Owner, got.Owner)
 	require.ElementsMatch(t, genesisState.CitizenList, got.CitizenList)
+	require.ElementsMatch(t, genesisState.CitizenOwnerList, got.CitizenOwnerList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

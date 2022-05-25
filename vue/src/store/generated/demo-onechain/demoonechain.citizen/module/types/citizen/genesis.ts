@@ -2,6 +2,7 @@
 import { Params } from "../citizen/params";
 import { Owner } from "../citizen/owner";
 import { Citizen } from "../citizen/citizen";
+import { CitizenOwner } from "../citizen/citizen_owner";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "demoonechain.citizen";
@@ -10,8 +11,9 @@ export const protobufPackage = "demoonechain.citizen";
 export interface GenesisState {
   params: Params | undefined;
   owner: Owner | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   citizenList: Citizen[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  citizenOwnerList: CitizenOwner[];
 }
 
 const baseGenesisState: object = {};
@@ -27,6 +29,9 @@ export const GenesisState = {
     for (const v of message.citizenList) {
       Citizen.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.citizenOwnerList) {
+      CitizenOwner.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -35,6 +40,7 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
+    message.citizenOwnerList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -47,6 +53,11 @@ export const GenesisState = {
         case 3:
           message.citizenList.push(Citizen.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.citizenOwnerList.push(
+            CitizenOwner.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -58,6 +69,7 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
+    message.citizenOwnerList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -71,6 +83,14 @@ export const GenesisState = {
     if (object.citizenList !== undefined && object.citizenList !== null) {
       for (const e of object.citizenList) {
         message.citizenList.push(Citizen.fromJSON(e));
+      }
+    }
+    if (
+      object.citizenOwnerList !== undefined &&
+      object.citizenOwnerList !== null
+    ) {
+      for (const e of object.citizenOwnerList) {
+        message.citizenOwnerList.push(CitizenOwner.fromJSON(e));
       }
     }
     return message;
@@ -89,12 +109,20 @@ export const GenesisState = {
     } else {
       obj.citizenList = [];
     }
+    if (message.citizenOwnerList) {
+      obj.citizenOwnerList = message.citizenOwnerList.map((e) =>
+        e ? CitizenOwner.toJSON(e) : undefined
+      );
+    } else {
+      obj.citizenOwnerList = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.citizenList = [];
+    message.citizenOwnerList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -108,6 +136,14 @@ export const GenesisState = {
     if (object.citizenList !== undefined && object.citizenList !== null) {
       for (const e of object.citizenList) {
         message.citizenList.push(Citizen.fromPartial(e));
+      }
+    }
+    if (
+      object.citizenOwnerList !== undefined &&
+      object.citizenOwnerList !== null
+    ) {
+      for (const e of object.citizenOwnerList) {
+        message.citizenOwnerList.push(CitizenOwner.fromPartial(e));
       }
     }
     return message;

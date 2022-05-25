@@ -10,8 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Owner:       &Owner{Owner: "onechain1hfs42grvajp3d77x7zsf349atctzh0cql3tuhf"},
-		CitizenList: []Citizen{},
+		Owner:            &Owner{Owner: "onechain1hfs42grvajp3d77x7zsf349atctzh0cql3tuhf"},
+		CitizenList:      []Citizen{},
+		CitizenOwnerList: []CitizenOwner{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -29,6 +30,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for citizen")
 		}
 		citizenIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in citizenOwner
+	citizenOwnerIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.CitizenOwnerList {
+		index := string(CitizenOwnerKey(elem.CitizenId))
+		if _, ok := citizenOwnerIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for citizenOwner")
+		}
+		citizenOwnerIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
