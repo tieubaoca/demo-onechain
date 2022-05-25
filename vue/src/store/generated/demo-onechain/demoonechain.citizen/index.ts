@@ -3,12 +3,13 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 import { Citizen } from "./module/types/citizen/citizen"
 import { CitizenIds } from "./module/types/citizen/citizen_ids"
 import { CitizenOwner } from "./module/types/citizen/citizen_owner"
+import { CitizensOwned } from "./module/types/citizen/citizens_owned"
 import { Metadata } from "./module/types/citizen/metadata"
 import { Owner } from "./module/types/citizen/owner"
 import { Params } from "./module/types/citizen/params"
 
 
-export { Citizen, CitizenIds, CitizenOwner, Metadata, Owner, Params };
+export { Citizen, CitizenIds, CitizenOwner, CitizensOwned, Metadata, Owner, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -55,11 +56,14 @@ const getDefaultState = () => {
 				CitizenOwnerAll: {},
 				CitizenIds: {},
 				CitizenIdsAll: {},
+				CitizensOwned: {},
+				CitizensOwnedAll: {},
 				
 				_Structure: {
 						Citizen: getStructure(Citizen.fromPartial({})),
 						CitizenIds: getStructure(CitizenIds.fromPartial({})),
 						CitizenOwner: getStructure(CitizenOwner.fromPartial({})),
+						CitizensOwned: getStructure(CitizensOwned.fromPartial({})),
 						Metadata: getStructure(Metadata.fromPartial({})),
 						Owner: getStructure(Owner.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -144,6 +148,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.CitizenIdsAll[JSON.stringify(params)] ?? {}
+		},
+				getCitizensOwned: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CitizensOwned[JSON.stringify(params)] ?? {}
+		},
+				getCitizensOwnedAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CitizensOwnedAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -384,6 +400,54 @@ export default {
 				return getters['getCitizenIdsAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryCitizenIdsAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryCitizensOwned({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCitizensOwned( key.owner)).data
+				
+					
+				commit('QUERY', { query: 'CitizensOwned', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCitizensOwned', payload: { options: { all }, params: {...key},query }})
+				return getters['getCitizensOwned']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCitizensOwned API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryCitizensOwnedAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCitizensOwnedAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryCitizensOwnedAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'CitizensOwnedAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCitizensOwnedAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getCitizensOwnedAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCitizensOwnedAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

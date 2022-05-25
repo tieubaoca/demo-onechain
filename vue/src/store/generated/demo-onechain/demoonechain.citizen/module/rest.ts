@@ -26,6 +26,11 @@ export interface CitizenCitizenOwner {
   owner?: string;
 }
 
+export interface CitizenCitizensOwned {
+  owner?: string;
+  citizenIds?: string[];
+}
+
 export interface CitizenMetadata {
   title?: string;
   description?: string;
@@ -90,6 +95,21 @@ export interface CitizenQueryAllCitizenResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface CitizenQueryAllCitizensOwnedResponse {
+  citizensOwned?: CitizenCitizensOwned[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface CitizenQueryGetCitizenIdsResponse {
   CitizenIds?: CitizenCitizenIds;
 }
@@ -100,6 +120,10 @@ export interface CitizenQueryGetCitizenOwnerResponse {
 
 export interface CitizenQueryGetCitizenResponse {
   citizen?: CitizenCitizen;
+}
+
+export interface CitizenQueryGetCitizensOwnedResponse {
+  citizensOwned?: CitizenCitizensOwned;
 }
 
 export interface CitizenQueryGetOwnerResponse {
@@ -520,6 +544,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryCitizenOwner = (citizenId: string, params: RequestParams = {}) =>
     this.request<CitizenQueryGetCitizenOwnerResponse, RpcStatus>({
       path: `/demo-onechain/citizen/citizen_owner/${citizenId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCitizensOwnedAll
+   * @summary Queries a list of CitizensOwned items.
+   * @request GET:/demo-onechain/citizen/citizens_owned
+   */
+  queryCitizensOwnedAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<CitizenQueryAllCitizensOwnedResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/citizens_owned`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCitizensOwned
+   * @summary Queries a CitizensOwned by index.
+   * @request GET:/demo-onechain/citizen/citizens_owned/{owner}
+   */
+  queryCitizensOwned = (owner: string, params: RequestParams = {}) =>
+    this.request<CitizenQueryGetCitizensOwnedResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/citizens_owned/${owner}`,
       method: "GET",
       format: "json",
       ...params,

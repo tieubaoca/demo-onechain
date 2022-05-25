@@ -7,6 +7,7 @@ import (
 	keepertest "demo-onechain/testutil/keeper"
 	"demo-onechain/x/citizen/keeper"
 	"demo-onechain/x/citizen/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

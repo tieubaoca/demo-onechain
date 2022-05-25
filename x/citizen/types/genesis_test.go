@@ -50,6 +50,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				CitizenIdsCount: 2,
+				CitizensOwnedList: []types.CitizensOwned{
+					{
+						Owner: "0",
+					},
+					{
+						Owner: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -105,6 +113,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				CitizenIdsCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated citizensOwned",
+			genState: &types.GenesisState{
+				CitizensOwnedList: []types.CitizensOwned{
+					{
+						Owner: "0",
+					},
+					{
+						Owner: "0",
+					},
+				},
 			},
 			valid: false,
 		},

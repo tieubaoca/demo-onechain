@@ -10,6 +10,7 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { CitizenOwner } from "../citizen/citizen_owner";
 import { CitizenIds } from "../citizen/citizen_ids";
+import { CitizensOwned } from "../citizen/citizens_owned";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -82,6 +83,23 @@ export interface QueryAllCitizenIdsRequest {
 
 export interface QueryAllCitizenIdsResponse {
   CitizenIds: CitizenIds[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetCitizensOwnedRequest {
+  owner: string;
+}
+
+export interface QueryGetCitizensOwnedResponse {
+  citizensOwned: CitizensOwned | undefined;
+}
+
+export interface QueryAllCitizensOwnedRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllCitizensOwnedResponse {
+  citizensOwned: CitizensOwned[];
   pagination: PageResponse | undefined;
 }
 
@@ -1319,6 +1337,325 @@ export const QueryAllCitizenIdsResponse = {
   },
 };
 
+const baseQueryGetCitizensOwnedRequest: object = { owner: "" };
+
+export const QueryGetCitizensOwnedRequest = {
+  encode(
+    message: QueryGetCitizensOwnedRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetCitizensOwnedRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetCitizensOwnedRequest,
+    } as QueryGetCitizensOwnedRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.owner = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCitizensOwnedRequest {
+    const message = {
+      ...baseQueryGetCitizensOwnedRequest,
+    } as QueryGetCitizensOwnedRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCitizensOwnedRequest): unknown {
+    const obj: any = {};
+    message.owner !== undefined && (obj.owner = message.owner);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCitizensOwnedRequest>
+  ): QueryGetCitizensOwnedRequest {
+    const message = {
+      ...baseQueryGetCitizensOwnedRequest,
+    } as QueryGetCitizensOwnedRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetCitizensOwnedResponse: object = {};
+
+export const QueryGetCitizensOwnedResponse = {
+  encode(
+    message: QueryGetCitizensOwnedResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.citizensOwned !== undefined) {
+      CitizensOwned.encode(
+        message.citizensOwned,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetCitizensOwnedResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetCitizensOwnedResponse,
+    } as QueryGetCitizensOwnedResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizensOwned = CitizensOwned.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCitizensOwnedResponse {
+    const message = {
+      ...baseQueryGetCitizensOwnedResponse,
+    } as QueryGetCitizensOwnedResponse;
+    if (object.citizensOwned !== undefined && object.citizensOwned !== null) {
+      message.citizensOwned = CitizensOwned.fromJSON(object.citizensOwned);
+    } else {
+      message.citizensOwned = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCitizensOwnedResponse): unknown {
+    const obj: any = {};
+    message.citizensOwned !== undefined &&
+      (obj.citizensOwned = message.citizensOwned
+        ? CitizensOwned.toJSON(message.citizensOwned)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCitizensOwnedResponse>
+  ): QueryGetCitizensOwnedResponse {
+    const message = {
+      ...baseQueryGetCitizensOwnedResponse,
+    } as QueryGetCitizensOwnedResponse;
+    if (object.citizensOwned !== undefined && object.citizensOwned !== null) {
+      message.citizensOwned = CitizensOwned.fromPartial(object.citizensOwned);
+    } else {
+      message.citizensOwned = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCitizensOwnedRequest: object = {};
+
+export const QueryAllCitizensOwnedRequest = {
+  encode(
+    message: QueryAllCitizensOwnedRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllCitizensOwnedRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllCitizensOwnedRequest,
+    } as QueryAllCitizensOwnedRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCitizensOwnedRequest {
+    const message = {
+      ...baseQueryAllCitizensOwnedRequest,
+    } as QueryAllCitizensOwnedRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCitizensOwnedRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCitizensOwnedRequest>
+  ): QueryAllCitizensOwnedRequest {
+    const message = {
+      ...baseQueryAllCitizensOwnedRequest,
+    } as QueryAllCitizensOwnedRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCitizensOwnedResponse: object = {};
+
+export const QueryAllCitizensOwnedResponse = {
+  encode(
+    message: QueryAllCitizensOwnedResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.citizensOwned) {
+      CitizensOwned.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllCitizensOwnedResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllCitizensOwnedResponse,
+    } as QueryAllCitizensOwnedResponse;
+    message.citizensOwned = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizensOwned.push(
+            CitizensOwned.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCitizensOwnedResponse {
+    const message = {
+      ...baseQueryAllCitizensOwnedResponse,
+    } as QueryAllCitizensOwnedResponse;
+    message.citizensOwned = [];
+    if (object.citizensOwned !== undefined && object.citizensOwned !== null) {
+      for (const e of object.citizensOwned) {
+        message.citizensOwned.push(CitizensOwned.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCitizensOwnedResponse): unknown {
+    const obj: any = {};
+    if (message.citizensOwned) {
+      obj.citizensOwned = message.citizensOwned.map((e) =>
+        e ? CitizensOwned.toJSON(e) : undefined
+      );
+    } else {
+      obj.citizensOwned = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCitizensOwnedResponse>
+  ): QueryAllCitizensOwnedResponse {
+    const message = {
+      ...baseQueryAllCitizensOwnedResponse,
+    } as QueryAllCitizensOwnedResponse;
+    message.citizensOwned = [];
+    if (object.citizensOwned !== undefined && object.citizensOwned !== null) {
+      for (const e of object.citizensOwned) {
+        message.citizensOwned.push(CitizensOwned.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1349,6 +1686,14 @@ export interface Query {
   CitizenIdsAll(
     request: QueryAllCitizenIdsRequest
   ): Promise<QueryAllCitizenIdsResponse>;
+  /** Queries a CitizensOwned by index. */
+  CitizensOwned(
+    request: QueryGetCitizensOwnedRequest
+  ): Promise<QueryGetCitizensOwnedResponse>;
+  /** Queries a list of CitizensOwned items. */
+  CitizensOwnedAll(
+    request: QueryAllCitizensOwnedRequest
+  ): Promise<QueryAllCitizensOwnedResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1471,6 +1816,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllCitizenIdsResponse.decode(new Reader(data))
+    );
+  }
+
+  CitizensOwned(
+    request: QueryGetCitizensOwnedRequest
+  ): Promise<QueryGetCitizensOwnedResponse> {
+    const data = QueryGetCitizensOwnedRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "CitizensOwned",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetCitizensOwnedResponse.decode(new Reader(data))
+    );
+  }
+
+  CitizensOwnedAll(
+    request: QueryAllCitizensOwnedRequest
+  ): Promise<QueryAllCitizensOwnedResponse> {
+    const data = QueryAllCitizensOwnedRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "CitizensOwnedAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllCitizensOwnedResponse.decode(new Reader(data))
     );
   }
 }

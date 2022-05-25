@@ -6,6 +6,7 @@ import { Owner } from "../citizen/owner";
 import { Citizen } from "../citizen/citizen";
 import { CitizenOwner } from "../citizen/citizen_owner";
 import { CitizenIds } from "../citizen/citizen_ids";
+import { CitizensOwned } from "../citizen/citizens_owned";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -16,8 +17,9 @@ export interface GenesisState {
   citizenList: Citizen[];
   citizenOwnerList: CitizenOwner[];
   citizenIdsList: CitizenIds[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   citizenIdsCount: number;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  citizensOwnedList: CitizensOwned[];
 }
 
 const baseGenesisState: object = { citizenIdsCount: 0 };
@@ -42,6 +44,9 @@ export const GenesisState = {
     if (message.citizenIdsCount !== 0) {
       writer.uint32(48).uint64(message.citizenIdsCount);
     }
+    for (const v of message.citizensOwnedList) {
+      CitizensOwned.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -52,6 +57,7 @@ export const GenesisState = {
     message.citizenList = [];
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
+    message.citizensOwnedList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -77,6 +83,11 @@ export const GenesisState = {
         case 6:
           message.citizenIdsCount = longToNumber(reader.uint64() as Long);
           break;
+        case 7:
+          message.citizensOwnedList.push(
+            CitizensOwned.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -90,6 +101,7 @@ export const GenesisState = {
     message.citizenList = [];
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
+    message.citizensOwnedList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -126,6 +138,14 @@ export const GenesisState = {
     } else {
       message.citizenIdsCount = 0;
     }
+    if (
+      object.citizensOwnedList !== undefined &&
+      object.citizensOwnedList !== null
+    ) {
+      for (const e of object.citizensOwnedList) {
+        message.citizensOwnedList.push(CitizensOwned.fromJSON(e));
+      }
+    }
     return message;
   },
 
@@ -158,6 +178,13 @@ export const GenesisState = {
     }
     message.citizenIdsCount !== undefined &&
       (obj.citizenIdsCount = message.citizenIdsCount);
+    if (message.citizensOwnedList) {
+      obj.citizensOwnedList = message.citizensOwnedList.map((e) =>
+        e ? CitizensOwned.toJSON(e) : undefined
+      );
+    } else {
+      obj.citizensOwnedList = [];
+    }
     return obj;
   },
 
@@ -166,6 +193,7 @@ export const GenesisState = {
     message.citizenList = [];
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
+    message.citizensOwnedList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -201,6 +229,14 @@ export const GenesisState = {
       message.citizenIdsCount = object.citizenIdsCount;
     } else {
       message.citizenIdsCount = 0;
+    }
+    if (
+      object.citizensOwnedList !== undefined &&
+      object.citizensOwnedList !== null
+    ) {
+      for (const e of object.citizensOwnedList) {
+        message.citizensOwnedList.push(CitizensOwned.fromPartial(e));
+      }
     }
     return message;
   },
