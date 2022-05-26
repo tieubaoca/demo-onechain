@@ -19779,6 +19779,7 @@ paths:
                           type: string
                         createTime:
                           type: string
+                          format: int64
                     assets:
                       type: array
                       items:
@@ -19929,6 +19930,7 @@ paths:
                         type: string
                       createTime:
                         type: string
+                        format: int64
                   assets:
                     type: array
                     items:
@@ -47209,6 +47211,7 @@ definitions:
             type: string
           createTime:
             type: string
+            format: int64
       assets:
         type: array
         items:
@@ -47260,6 +47263,46 @@ definitions:
         type: string
       createTime:
         type: string
+        format: int64
+  demoonechain.citizen.MsgMintCitizenResponse:
+    type: object
+    properties:
+      citizen:
+        type: object
+        properties:
+          citizenId:
+            type: string
+          metadata:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              uri:
+                type: string
+              author:
+                type: string
+              createTime:
+                type: string
+                format: int64
+          assets:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
   demoonechain.citizen.MsgTransferOwnershipResponse:
     type: object
   demoonechain.citizen.Owner:
@@ -47368,6 +47411,7 @@ definitions:
                   type: string
                 createTime:
                   type: string
+                  format: int64
             assets:
               type: array
               items:
@@ -47491,6 +47535,7 @@ definitions:
                 type: string
               createTime:
                 type: string
+                format: int64
           assets:
             type: array
             items:

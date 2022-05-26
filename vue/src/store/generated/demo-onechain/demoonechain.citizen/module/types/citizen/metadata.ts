@@ -1,5 +1,6 @@
 /* eslint-disable */
-import { Writer, Reader } from "protobufjs/minimal";
+import * as Long from "long";
+import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -8,7 +9,7 @@ export interface Metadata {
   description: string;
   uri: string;
   author: string;
-  createTime: string;
+  createTime: number;
 }
 
 const baseMetadata: object = {
@@ -16,7 +17,7 @@ const baseMetadata: object = {
   description: "",
   uri: "",
   author: "",
-  createTime: "",
+  createTime: 0,
 };
 
 export const Metadata = {
@@ -33,8 +34,8 @@ export const Metadata = {
     if (message.author !== "") {
       writer.uint32(34).string(message.author);
     }
-    if (message.createTime !== "") {
-      writer.uint32(42).string(message.createTime);
+    if (message.createTime !== 0) {
+      writer.uint32(40).int64(message.createTime);
     }
     return writer;
   },
@@ -59,7 +60,7 @@ export const Metadata = {
           message.author = reader.string();
           break;
         case 5:
-          message.createTime = reader.string();
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -92,9 +93,9 @@ export const Metadata = {
       message.author = "";
     }
     if (object.createTime !== undefined && object.createTime !== null) {
-      message.createTime = String(object.createTime);
+      message.createTime = Number(object.createTime);
     } else {
-      message.createTime = "";
+      message.createTime = 0;
     }
     return message;
   },
@@ -135,11 +136,21 @@ export const Metadata = {
     if (object.createTime !== undefined && object.createTime !== null) {
       message.createTime = object.createTime;
     } else {
-      message.createTime = "";
+      message.createTime = 0;
     }
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -151,3 +162,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

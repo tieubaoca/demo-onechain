@@ -36,7 +36,13 @@ export interface CitizenMetadata {
   description?: string;
   uri?: string;
   author?: string;
+
+  /** @format int64 */
   createTime?: string;
+}
+
+export interface CitizenMsgMintCitizenResponse {
+  citizen?: CitizenCitizen;
 }
 
 export type CitizenMsgTransferOwnershipResponse = object;

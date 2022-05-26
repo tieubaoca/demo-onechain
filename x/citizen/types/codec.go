@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgTransferOwnership{}, "citizen/TransferOwnership", nil)
+	cdc.RegisterConcrete(&MsgMintCitizen{}, "citizen/MintCitizen", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgTransferOwnership{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgMintCitizen{},
 	)
 	// this line is used by starport scaffolding # 3
 

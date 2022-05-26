@@ -69,6 +69,7 @@ func (k Keeper) AppendCitizensOwned(ctx sdk.Context, owner string, newCitizenId 
 	citizenIdsOwned, found := k.GetCitizensOwned(ctx, owner)
 	if !found {
 		k.SetCitizensOwned(ctx, types.CitizensOwned{Owner: owner, CitizenIds: []string{newCitizenId}})
+		return
 	}
 	citizenIdsOwned.CitizenIds = append(citizenIdsOwned.CitizenIds, newCitizenId)
 	k.SetCitizensOwned(ctx, citizenIdsOwned)

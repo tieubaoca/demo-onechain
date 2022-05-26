@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Reader, Writer } from "protobufjs/minimal";
+import { Citizen } from "../citizen/citizen";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -9,6 +10,19 @@ export interface MsgTransferOwnership {
 }
 
 export interface MsgTransferOwnershipResponse {}
+
+export interface MsgMintCitizen {
+  creator: string;
+  to: string;
+  citizenId: string;
+  title: string;
+  description: string;
+  uri: string;
+}
+
+export interface MsgMintCitizenResponse {
+  citizen: Citizen | undefined;
+}
 
 const baseMsgTransferOwnership: object = { creator: "", newOwner: "" };
 
@@ -137,12 +151,224 @@ export const MsgTransferOwnershipResponse = {
   },
 };
 
+const baseMsgMintCitizen: object = {
+  creator: "",
+  to: "",
+  citizenId: "",
+  title: "",
+  description: "",
+  uri: "",
+};
+
+export const MsgMintCitizen = {
+  encode(message: MsgMintCitizen, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.to !== "") {
+      writer.uint32(18).string(message.to);
+    }
+    if (message.citizenId !== "") {
+      writer.uint32(26).string(message.citizenId);
+    }
+    if (message.title !== "") {
+      writer.uint32(34).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(42).string(message.description);
+    }
+    if (message.uri !== "") {
+      writer.uint32(50).string(message.uri);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgMintCitizen {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgMintCitizen } as MsgMintCitizen;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.to = reader.string();
+          break;
+        case 3:
+          message.citizenId = reader.string();
+          break;
+        case 4:
+          message.title = reader.string();
+          break;
+        case 5:
+          message.description = reader.string();
+          break;
+        case 6:
+          message.uri = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgMintCitizen {
+    const message = { ...baseMsgMintCitizen } as MsgMintCitizen;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = String(object.to);
+    } else {
+      message.to = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = String(object.citizenId);
+    } else {
+      message.citizenId = "";
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = String(object.title);
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    } else {
+      message.description = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgMintCitizen): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.to !== undefined && (obj.to = message.to);
+    message.citizenId !== undefined && (obj.citizenId = message.citizenId);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.uri !== undefined && (obj.uri = message.uri);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgMintCitizen>): MsgMintCitizen {
+    const message = { ...baseMsgMintCitizen } as MsgMintCitizen;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    } else {
+      message.to = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = object.citizenId;
+    } else {
+      message.citizenId = "";
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = object.title;
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgMintCitizenResponse: object = {};
+
+export const MsgMintCitizenResponse = {
+  encode(
+    message: MsgMintCitizenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.citizen !== undefined) {
+      Citizen.encode(message.citizen, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgMintCitizenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgMintCitizenResponse } as MsgMintCitizenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizen = Citizen.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgMintCitizenResponse {
+    const message = { ...baseMsgMintCitizenResponse } as MsgMintCitizenResponse;
+    if (object.citizen !== undefined && object.citizen !== null) {
+      message.citizen = Citizen.fromJSON(object.citizen);
+    } else {
+      message.citizen = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgMintCitizenResponse): unknown {
+    const obj: any = {};
+    message.citizen !== undefined &&
+      (obj.citizen = message.citizen
+        ? Citizen.toJSON(message.citizen)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgMintCitizenResponse>
+  ): MsgMintCitizenResponse {
+    const message = { ...baseMsgMintCitizenResponse } as MsgMintCitizenResponse;
+    if (object.citizen !== undefined && object.citizen !== null) {
+      message.citizen = Citizen.fromPartial(object.citizen);
+    } else {
+      message.citizen = undefined;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   TransferOwnership(
     request: MsgTransferOwnership
   ): Promise<MsgTransferOwnershipResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  MintCitizen(request: MsgMintCitizen): Promise<MsgMintCitizenResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -161,6 +387,18 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgTransferOwnershipResponse.decode(new Reader(data))
+    );
+  }
+
+  MintCitizen(request: MsgMintCitizen): Promise<MsgMintCitizenResponse> {
+    const data = MsgMintCitizen.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Msg",
+      "MintCitizen",
+      data
+    );
+    return promise.then((data) =>
+      MsgMintCitizenResponse.decode(new Reader(data))
     );
   }
 }
