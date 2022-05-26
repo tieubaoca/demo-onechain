@@ -32,6 +32,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.CitizensOwnedList {
 		k.SetCitizensOwned(ctx, elem)
 	}
+	// Set all the approval
+	for _, elem := range genState.ApprovalList {
+		k.SetApproval(ctx, elem)
+	}
+	// Set all the approvalForAll
+	for _, elem := range genState.ApprovalForAllList {
+		k.SetApprovalForAll(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -51,6 +59,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.CitizenIdsList = k.GetAllCitizenIds(ctx)
 	genesis.CitizenIdsCount = k.GetCitizenIdsCount(ctx)
 	genesis.CitizensOwnedList = k.GetAllCitizensOwned(ctx)
+	genesis.ApprovalList = k.GetAllApproval(ctx)
+	genesis.ApprovalForAllList = k.GetAllApprovalForAll(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

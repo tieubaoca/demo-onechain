@@ -9,6 +9,8 @@ import "citizen/citizen.proto";
 import "citizen/citizen_owner.proto";
 import "citizen/citizen_ids.proto";
 import "citizen/citizens_owned.proto";
+import "citizen/approval.proto";
+import "citizen/approval_for_all.proto";
 // this line is used by starport scaffolding # 1
 import "citizen/metadata.proto";
 import "cosmos/base/v1beta1/coin.proto";
@@ -69,6 +71,26 @@ service Query {
 	// Queries a list of CitizensOwned items.
 	rpc CitizensOwnedAll(QueryAllCitizensOwnedRequest) returns (QueryAllCitizensOwnedResponse) {
 		option (google.api.http).get = "/demo-onechain/citizen/citizens_owned";
+	}
+
+// Queries a Approval by index.
+	rpc Approval(QueryGetApprovalRequest) returns (QueryGetApprovalResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/approval/{citizenId}";
+	}
+
+	// Queries a list of Approval items.
+	rpc ApprovalAll(QueryAllApprovalRequest) returns (QueryAllApprovalResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/approval";
+	}
+
+// Queries a ApprovalForAll by index.
+	rpc ApprovalForAll(QueryGetApprovalForAllRequest) returns (QueryGetApprovalForAllResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/approval_for_all/{owner}";
+	}
+
+	// Queries a list of ApprovalForAll items.
+	rpc ApprovalForAllAll(QueryAllApprovalForAllRequest) returns (QueryAllApprovalForAllResponse) {
+		option (google.api.http).get = "/demo-onechain/citizen/approval_for_all";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -163,6 +185,42 @@ message QueryAllCitizensOwnedRequest {
 
 message QueryAllCitizensOwnedResponse {
 	repeated CitizensOwned citizensOwned = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetApprovalRequest {
+	  string citizenId = 1;
+
+}
+
+message QueryGetApprovalResponse {
+	Approval approval = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllApprovalRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllApprovalResponse {
+	repeated Approval approval = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetApprovalForAllRequest {
+	  string owner = 1;
+
+}
+
+message QueryGetApprovalForAllResponse {
+	ApprovalForAll approvalForAll = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllApprovalForAllRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllApprovalForAllResponse {
+	repeated ApprovalForAll approvalForAll = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

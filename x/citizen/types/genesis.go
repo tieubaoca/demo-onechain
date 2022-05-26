@@ -10,11 +10,13 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Owner:             &Owner{Owner: "onechain1hfs42grvajp3d77x7zsf349atctzh0cql3tuhf"},
-		CitizenList:       []Citizen{},
-		CitizenOwnerList:  []CitizenOwner{},
-		CitizenIdsList:    []CitizenIds{},
-		CitizensOwnedList: []CitizensOwned{},
+		Owner:              &Owner{Owner: "onechain1hfs42grvajp3d77x7zsf349atctzh0cql3tuhf"},
+		CitizenList:        []Citizen{},
+		CitizenOwnerList:   []CitizenOwner{},
+		CitizenIdsList:     []CitizenIds{},
+		CitizensOwnedList:  []CitizensOwned{},
+		ApprovalList:       []Approval{},
+		ApprovalForAllList: []ApprovalForAll{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -64,6 +66,26 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for citizensOwned")
 		}
 		citizensOwnedIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in approval
+	approvalIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ApprovalList {
+		index := string(ApprovalKey(elem.CitizenId))
+		if _, ok := approvalIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for approval")
+		}
+		approvalIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in approvalForAll
+	approvalForAllIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ApprovalForAllList {
+		index := string(ApprovalForAllKey(elem.Owner))
+		if _, ok := approvalForAllIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for approvalForAll")
+		}
+		approvalForAllIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

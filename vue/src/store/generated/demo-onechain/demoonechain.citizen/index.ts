@@ -1,5 +1,7 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Approval } from "./module/types/citizen/approval"
+import { ApprovalForAll } from "./module/types/citizen/approval_for_all"
 import { Citizen } from "./module/types/citizen/citizen"
 import { CitizenIds } from "./module/types/citizen/citizen_ids"
 import { CitizenOwner } from "./module/types/citizen/citizen_owner"
@@ -9,7 +11,7 @@ import { Owner } from "./module/types/citizen/owner"
 import { Params } from "./module/types/citizen/params"
 
 
-export { Citizen, CitizenIds, CitizenOwner, CitizensOwned, Metadata, Owner, Params };
+export { Approval, ApprovalForAll, Citizen, CitizenIds, CitizenOwner, CitizensOwned, Metadata, Owner, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -58,8 +60,14 @@ const getDefaultState = () => {
 				CitizenIdsAll: {},
 				CitizensOwned: {},
 				CitizensOwnedAll: {},
+				Approval: {},
+				ApprovalAll: {},
+				ApprovalForAll: {},
+				ApprovalForAllAll: {},
 				
 				_Structure: {
+						Approval: getStructure(Approval.fromPartial({})),
+						ApprovalForAll: getStructure(ApprovalForAll.fromPartial({})),
 						Citizen: getStructure(Citizen.fromPartial({})),
 						CitizenIds: getStructure(CitizenIds.fromPartial({})),
 						CitizenOwner: getStructure(CitizenOwner.fromPartial({})),
@@ -160,6 +168,30 @@ export default {
 						(<any> params).query=null
 					}
 			return state.CitizensOwnedAll[JSON.stringify(params)] ?? {}
+		},
+				getApproval: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Approval[JSON.stringify(params)] ?? {}
+		},
+				getApprovalAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ApprovalAll[JSON.stringify(params)] ?? {}
+		},
+				getApprovalForAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ApprovalForAll[JSON.stringify(params)] ?? {}
+		},
+				getApprovalForAllAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ApprovalForAllAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -453,21 +485,102 @@ export default {
 		},
 		
 		
-		async sendMsgMintCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryApproval({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgMintCitizen(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryApproval( key.citizenId)).data
+				
+					
+				commit('QUERY', { query: 'Approval', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryApproval', payload: { options: { all }, params: {...key},query }})
+				return getters['getApproval']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgMintCitizen:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryApproval API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryApprovalAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryApprovalAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryApprovalAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ApprovalAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryApprovalAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getApprovalAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryApprovalAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryApprovalForAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryApprovalForAll( key.owner)).data
+				
+					
+				commit('QUERY', { query: 'ApprovalForAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryApprovalForAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getApprovalForAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryApprovalForAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryApprovalForAllAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryApprovalForAllAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryApprovalForAllAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ApprovalForAllAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryApprovalForAllAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getApprovalForAllAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryApprovalForAllAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgTransferOwnership({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -483,20 +596,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgMintCitizen({ rootGetters }, { value }) {
+		async sendMsgMintCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgMintCitizen(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgMintCitizen:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgMintCitizen:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgTransferOwnership({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -507,6 +622,19 @@ export default {
 					throw new Error('TxClient:MsgTransferOwnership:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgTransferOwnership:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgMintCitizen({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgMintCitizen(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgMintCitizen:Create Could not create message: ' + e.message)
 				}
 			}
 		},

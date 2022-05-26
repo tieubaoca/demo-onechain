@@ -11,6 +11,8 @@ import {
 import { CitizenOwner } from "../citizen/citizen_owner";
 import { CitizenIds } from "../citizen/citizen_ids";
 import { CitizensOwned } from "../citizen/citizens_owned";
+import { Approval } from "../citizen/approval";
+import { ApprovalForAll } from "../citizen/approval_for_all";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -100,6 +102,40 @@ export interface QueryAllCitizensOwnedRequest {
 
 export interface QueryAllCitizensOwnedResponse {
   citizensOwned: CitizensOwned[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetApprovalRequest {
+  citizenId: string;
+}
+
+export interface QueryGetApprovalResponse {
+  approval: Approval | undefined;
+}
+
+export interface QueryAllApprovalRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllApprovalResponse {
+  approval: Approval[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetApprovalForAllRequest {
+  owner: string;
+}
+
+export interface QueryGetApprovalForAllResponse {
+  approvalForAll: ApprovalForAll | undefined;
+}
+
+export interface QueryAllApprovalForAllRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllApprovalForAllResponse {
+  approvalForAll: ApprovalForAll[];
   pagination: PageResponse | undefined;
 }
 
@@ -1656,6 +1692,638 @@ export const QueryAllCitizensOwnedResponse = {
   },
 };
 
+const baseQueryGetApprovalRequest: object = { citizenId: "" };
+
+export const QueryGetApprovalRequest = {
+  encode(
+    message: QueryGetApprovalRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.citizenId !== "") {
+      writer.uint32(10).string(message.citizenId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetApprovalRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetApprovalRequest,
+    } as QueryGetApprovalRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.citizenId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetApprovalRequest {
+    const message = {
+      ...baseQueryGetApprovalRequest,
+    } as QueryGetApprovalRequest;
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = String(object.citizenId);
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetApprovalRequest): unknown {
+    const obj: any = {};
+    message.citizenId !== undefined && (obj.citizenId = message.citizenId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetApprovalRequest>
+  ): QueryGetApprovalRequest {
+    const message = {
+      ...baseQueryGetApprovalRequest,
+    } as QueryGetApprovalRequest;
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = object.citizenId;
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetApprovalResponse: object = {};
+
+export const QueryGetApprovalResponse = {
+  encode(
+    message: QueryGetApprovalResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.approval !== undefined) {
+      Approval.encode(message.approval, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetApprovalResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetApprovalResponse,
+    } as QueryGetApprovalResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.approval = Approval.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetApprovalResponse {
+    const message = {
+      ...baseQueryGetApprovalResponse,
+    } as QueryGetApprovalResponse;
+    if (object.approval !== undefined && object.approval !== null) {
+      message.approval = Approval.fromJSON(object.approval);
+    } else {
+      message.approval = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetApprovalResponse): unknown {
+    const obj: any = {};
+    message.approval !== undefined &&
+      (obj.approval = message.approval
+        ? Approval.toJSON(message.approval)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetApprovalResponse>
+  ): QueryGetApprovalResponse {
+    const message = {
+      ...baseQueryGetApprovalResponse,
+    } as QueryGetApprovalResponse;
+    if (object.approval !== undefined && object.approval !== null) {
+      message.approval = Approval.fromPartial(object.approval);
+    } else {
+      message.approval = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllApprovalRequest: object = {};
+
+export const QueryAllApprovalRequest = {
+  encode(
+    message: QueryAllApprovalRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllApprovalRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllApprovalRequest,
+    } as QueryAllApprovalRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllApprovalRequest {
+    const message = {
+      ...baseQueryAllApprovalRequest,
+    } as QueryAllApprovalRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllApprovalRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllApprovalRequest>
+  ): QueryAllApprovalRequest {
+    const message = {
+      ...baseQueryAllApprovalRequest,
+    } as QueryAllApprovalRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllApprovalResponse: object = {};
+
+export const QueryAllApprovalResponse = {
+  encode(
+    message: QueryAllApprovalResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.approval) {
+      Approval.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllApprovalResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllApprovalResponse,
+    } as QueryAllApprovalResponse;
+    message.approval = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.approval.push(Approval.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllApprovalResponse {
+    const message = {
+      ...baseQueryAllApprovalResponse,
+    } as QueryAllApprovalResponse;
+    message.approval = [];
+    if (object.approval !== undefined && object.approval !== null) {
+      for (const e of object.approval) {
+        message.approval.push(Approval.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllApprovalResponse): unknown {
+    const obj: any = {};
+    if (message.approval) {
+      obj.approval = message.approval.map((e) =>
+        e ? Approval.toJSON(e) : undefined
+      );
+    } else {
+      obj.approval = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllApprovalResponse>
+  ): QueryAllApprovalResponse {
+    const message = {
+      ...baseQueryAllApprovalResponse,
+    } as QueryAllApprovalResponse;
+    message.approval = [];
+    if (object.approval !== undefined && object.approval !== null) {
+      for (const e of object.approval) {
+        message.approval.push(Approval.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetApprovalForAllRequest: object = { owner: "" };
+
+export const QueryGetApprovalForAllRequest = {
+  encode(
+    message: QueryGetApprovalForAllRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetApprovalForAllRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetApprovalForAllRequest,
+    } as QueryGetApprovalForAllRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.owner = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetApprovalForAllRequest {
+    const message = {
+      ...baseQueryGetApprovalForAllRequest,
+    } as QueryGetApprovalForAllRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetApprovalForAllRequest): unknown {
+    const obj: any = {};
+    message.owner !== undefined && (obj.owner = message.owner);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetApprovalForAllRequest>
+  ): QueryGetApprovalForAllRequest {
+    const message = {
+      ...baseQueryGetApprovalForAllRequest,
+    } as QueryGetApprovalForAllRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetApprovalForAllResponse: object = {};
+
+export const QueryGetApprovalForAllResponse = {
+  encode(
+    message: QueryGetApprovalForAllResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.approvalForAll !== undefined) {
+      ApprovalForAll.encode(
+        message.approvalForAll,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetApprovalForAllResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetApprovalForAllResponse,
+    } as QueryGetApprovalForAllResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.approvalForAll = ApprovalForAll.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetApprovalForAllResponse {
+    const message = {
+      ...baseQueryGetApprovalForAllResponse,
+    } as QueryGetApprovalForAllResponse;
+    if (object.approvalForAll !== undefined && object.approvalForAll !== null) {
+      message.approvalForAll = ApprovalForAll.fromJSON(object.approvalForAll);
+    } else {
+      message.approvalForAll = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetApprovalForAllResponse): unknown {
+    const obj: any = {};
+    message.approvalForAll !== undefined &&
+      (obj.approvalForAll = message.approvalForAll
+        ? ApprovalForAll.toJSON(message.approvalForAll)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetApprovalForAllResponse>
+  ): QueryGetApprovalForAllResponse {
+    const message = {
+      ...baseQueryGetApprovalForAllResponse,
+    } as QueryGetApprovalForAllResponse;
+    if (object.approvalForAll !== undefined && object.approvalForAll !== null) {
+      message.approvalForAll = ApprovalForAll.fromPartial(
+        object.approvalForAll
+      );
+    } else {
+      message.approvalForAll = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllApprovalForAllRequest: object = {};
+
+export const QueryAllApprovalForAllRequest = {
+  encode(
+    message: QueryAllApprovalForAllRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllApprovalForAllRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllApprovalForAllRequest,
+    } as QueryAllApprovalForAllRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllApprovalForAllRequest {
+    const message = {
+      ...baseQueryAllApprovalForAllRequest,
+    } as QueryAllApprovalForAllRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllApprovalForAllRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllApprovalForAllRequest>
+  ): QueryAllApprovalForAllRequest {
+    const message = {
+      ...baseQueryAllApprovalForAllRequest,
+    } as QueryAllApprovalForAllRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllApprovalForAllResponse: object = {};
+
+export const QueryAllApprovalForAllResponse = {
+  encode(
+    message: QueryAllApprovalForAllResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.approvalForAll) {
+      ApprovalForAll.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllApprovalForAllResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllApprovalForAllResponse,
+    } as QueryAllApprovalForAllResponse;
+    message.approvalForAll = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.approvalForAll.push(
+            ApprovalForAll.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllApprovalForAllResponse {
+    const message = {
+      ...baseQueryAllApprovalForAllResponse,
+    } as QueryAllApprovalForAllResponse;
+    message.approvalForAll = [];
+    if (object.approvalForAll !== undefined && object.approvalForAll !== null) {
+      for (const e of object.approvalForAll) {
+        message.approvalForAll.push(ApprovalForAll.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllApprovalForAllResponse): unknown {
+    const obj: any = {};
+    if (message.approvalForAll) {
+      obj.approvalForAll = message.approvalForAll.map((e) =>
+        e ? ApprovalForAll.toJSON(e) : undefined
+      );
+    } else {
+      obj.approvalForAll = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllApprovalForAllResponse>
+  ): QueryAllApprovalForAllResponse {
+    const message = {
+      ...baseQueryAllApprovalForAllResponse,
+    } as QueryAllApprovalForAllResponse;
+    message.approvalForAll = [];
+    if (object.approvalForAll !== undefined && object.approvalForAll !== null) {
+      for (const e of object.approvalForAll) {
+        message.approvalForAll.push(ApprovalForAll.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1694,6 +2362,20 @@ export interface Query {
   CitizensOwnedAll(
     request: QueryAllCitizensOwnedRequest
   ): Promise<QueryAllCitizensOwnedResponse>;
+  /** Queries a Approval by index. */
+  Approval(request: QueryGetApprovalRequest): Promise<QueryGetApprovalResponse>;
+  /** Queries a list of Approval items. */
+  ApprovalAll(
+    request: QueryAllApprovalRequest
+  ): Promise<QueryAllApprovalResponse>;
+  /** Queries a ApprovalForAll by index. */
+  ApprovalForAll(
+    request: QueryGetApprovalForAllRequest
+  ): Promise<QueryGetApprovalForAllResponse>;
+  /** Queries a list of ApprovalForAll items. */
+  ApprovalForAllAll(
+    request: QueryAllApprovalForAllRequest
+  ): Promise<QueryAllApprovalForAllResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1844,6 +2526,62 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllCitizensOwnedResponse.decode(new Reader(data))
+    );
+  }
+
+  Approval(
+    request: QueryGetApprovalRequest
+  ): Promise<QueryGetApprovalResponse> {
+    const data = QueryGetApprovalRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "Approval",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetApprovalResponse.decode(new Reader(data))
+    );
+  }
+
+  ApprovalAll(
+    request: QueryAllApprovalRequest
+  ): Promise<QueryAllApprovalResponse> {
+    const data = QueryAllApprovalRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "ApprovalAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllApprovalResponse.decode(new Reader(data))
+    );
+  }
+
+  ApprovalForAll(
+    request: QueryGetApprovalForAllRequest
+  ): Promise<QueryGetApprovalForAllResponse> {
+    const data = QueryGetApprovalForAllRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "ApprovalForAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetApprovalForAllResponse.decode(new Reader(data))
+    );
+  }
+
+  ApprovalForAllAll(
+    request: QueryAllApprovalForAllRequest
+  ): Promise<QueryAllApprovalForAllResponse> {
+    const data = QueryAllApprovalForAllRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Query",
+      "ApprovalForAllAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllApprovalForAllResponse.decode(new Reader(data))
     );
   }
 }

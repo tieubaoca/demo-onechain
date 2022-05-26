@@ -58,6 +58,22 @@ func TestGenesisState_Validate(t *testing.T) {
 						Owner: "1",
 					},
 				},
+				ApprovalList: []types.Approval{
+					{
+						CitizenId: "0",
+					},
+					{
+						CitizenId: "1",
+					},
+				},
+				ApprovalForAllList: []types.ApprovalForAll{
+					{
+						Owner: "0",
+					},
+					{
+						Owner: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -120,6 +136,34 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated citizensOwned",
 			genState: &types.GenesisState{
 				CitizensOwnedList: []types.CitizensOwned{
+					{
+						Owner: "0",
+					},
+					{
+						Owner: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated approval",
+			genState: &types.GenesisState{
+				ApprovalList: []types.Approval{
+					{
+						CitizenId: "0",
+					},
+					{
+						CitizenId: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated approvalForAll",
+			genState: &types.GenesisState{
+				ApprovalForAllList: []types.ApprovalForAll{
 					{
 						Owner: "0",
 					},

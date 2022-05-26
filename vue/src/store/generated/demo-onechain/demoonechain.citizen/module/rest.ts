@@ -9,6 +9,16 @@
  * ---------------------------------------------------------------
  */
 
+export interface CitizenApproval {
+  citizenId?: string;
+  operator?: string;
+}
+
+export interface CitizenApprovalForAll {
+  owner?: string;
+  operators?: string;
+}
+
 export interface CitizenCitizen {
   citizenId?: string;
   metadata?: CitizenMetadata;
@@ -55,6 +65,36 @@ export interface CitizenOwner {
  * Params defines the parameters for the module.
  */
 export type CitizenParams = object;
+
+export interface CitizenQueryAllApprovalForAllResponse {
+  approvalForAll?: CitizenApprovalForAll[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface CitizenQueryAllApprovalResponse {
+  approval?: CitizenApproval[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface CitizenQueryAllCitizenIdsResponse {
   CitizenIds?: CitizenCitizenIds[];
@@ -114,6 +154,14 @@ export interface CitizenQueryAllCitizensOwnedResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface CitizenQueryGetApprovalForAllResponse {
+  approvalForAll?: CitizenApprovalForAll;
+}
+
+export interface CitizenQueryGetApprovalResponse {
+  approval?: CitizenApproval;
 }
 
 export interface CitizenQueryGetCitizenIdsResponse {
@@ -425,10 +473,94 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title citizen/citizen.proto
+ * @title citizen/approval.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryApprovalAll
+   * @summary Queries a list of Approval items.
+   * @request GET:/demo-onechain/citizen/approval
+   */
+  queryApprovalAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<CitizenQueryAllApprovalResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/approval`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryApproval
+   * @summary Queries a Approval by index.
+   * @request GET:/demo-onechain/citizen/approval/{citizenId}
+   */
+  queryApproval = (citizenId: string, params: RequestParams = {}) =>
+    this.request<CitizenQueryGetApprovalResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/approval/${citizenId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryApprovalForAllAll
+   * @summary Queries a list of ApprovalForAll items.
+   * @request GET:/demo-onechain/citizen/approval_for_all
+   */
+  queryApprovalForAllAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<CitizenQueryAllApprovalForAllResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/approval_for_all`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryApprovalForAll
+   * @summary Queries a ApprovalForAll by index.
+   * @request GET:/demo-onechain/citizen/approval_for_all/{owner}
+   */
+  queryApprovalForAll = (owner: string, params: RequestParams = {}) =>
+    this.request<CitizenQueryGetApprovalForAllResponse, RpcStatus>({
+      path: `/demo-onechain/citizen/approval_for_all/${owner}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

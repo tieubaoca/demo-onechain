@@ -7,6 +7,8 @@ import { Citizen } from "../citizen/citizen";
 import { CitizenOwner } from "../citizen/citizen_owner";
 import { CitizenIds } from "../citizen/citizen_ids";
 import { CitizensOwned } from "../citizen/citizens_owned";
+import { Approval } from "../citizen/approval";
+import { ApprovalForAll } from "../citizen/approval_for_all";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -18,8 +20,10 @@ export interface GenesisState {
   citizenOwnerList: CitizenOwner[];
   citizenIdsList: CitizenIds[];
   citizenIdsCount: number;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   citizensOwnedList: CitizensOwned[];
+  approvalList: Approval[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  approvalForAllList: ApprovalForAll[];
 }
 
 const baseGenesisState: object = { citizenIdsCount: 0 };
@@ -47,6 +51,12 @@ export const GenesisState = {
     for (const v of message.citizensOwnedList) {
       CitizensOwned.encode(v!, writer.uint32(58).fork()).ldelim();
     }
+    for (const v of message.approvalList) {
+      Approval.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    for (const v of message.approvalForAllList) {
+      ApprovalForAll.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -58,6 +68,8 @@ export const GenesisState = {
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
     message.citizensOwnedList = [];
+    message.approvalList = [];
+    message.approvalForAllList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -88,6 +100,14 @@ export const GenesisState = {
             CitizensOwned.decode(reader, reader.uint32())
           );
           break;
+        case 8:
+          message.approvalList.push(Approval.decode(reader, reader.uint32()));
+          break;
+        case 9:
+          message.approvalForAllList.push(
+            ApprovalForAll.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -102,6 +122,8 @@ export const GenesisState = {
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
     message.citizensOwnedList = [];
+    message.approvalList = [];
+    message.approvalForAllList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -146,6 +168,19 @@ export const GenesisState = {
         message.citizensOwnedList.push(CitizensOwned.fromJSON(e));
       }
     }
+    if (object.approvalList !== undefined && object.approvalList !== null) {
+      for (const e of object.approvalList) {
+        message.approvalList.push(Approval.fromJSON(e));
+      }
+    }
+    if (
+      object.approvalForAllList !== undefined &&
+      object.approvalForAllList !== null
+    ) {
+      for (const e of object.approvalForAllList) {
+        message.approvalForAllList.push(ApprovalForAll.fromJSON(e));
+      }
+    }
     return message;
   },
 
@@ -185,6 +220,20 @@ export const GenesisState = {
     } else {
       obj.citizensOwnedList = [];
     }
+    if (message.approvalList) {
+      obj.approvalList = message.approvalList.map((e) =>
+        e ? Approval.toJSON(e) : undefined
+      );
+    } else {
+      obj.approvalList = [];
+    }
+    if (message.approvalForAllList) {
+      obj.approvalForAllList = message.approvalForAllList.map((e) =>
+        e ? ApprovalForAll.toJSON(e) : undefined
+      );
+    } else {
+      obj.approvalForAllList = [];
+    }
     return obj;
   },
 
@@ -194,6 +243,8 @@ export const GenesisState = {
     message.citizenOwnerList = [];
     message.citizenIdsList = [];
     message.citizensOwnedList = [];
+    message.approvalList = [];
+    message.approvalForAllList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -236,6 +287,19 @@ export const GenesisState = {
     ) {
       for (const e of object.citizensOwnedList) {
         message.citizensOwnedList.push(CitizensOwned.fromPartial(e));
+      }
+    }
+    if (object.approvalList !== undefined && object.approvalList !== null) {
+      for (const e of object.approvalList) {
+        message.approvalList.push(Approval.fromPartial(e));
+      }
+    }
+    if (
+      object.approvalForAllList !== undefined &&
+      object.approvalForAllList !== null
+    ) {
+      for (const e of object.approvalForAllList) {
+        message.approvalForAllList.push(ApprovalForAll.fromPartial(e));
       }
     }
     return message;
