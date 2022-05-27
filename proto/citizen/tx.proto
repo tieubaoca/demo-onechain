@@ -11,6 +11,7 @@ service Msg {
       rpc TransferOwnership(MsgTransferOwnership) returns (MsgTransferOwnershipResponse);
   rpc MintCitizen(MsgMintCitizen) returns (MsgMintCitizenResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
+  rpc SetApproveForAll(MsgSetApproveForAll) returns (MsgSetApproveForAllResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -43,6 +44,15 @@ message MsgApprove {
 }
 
 message MsgApproveResponse {
+}
+
+message MsgSetApproveForAll {
+  string creator = 1;
+  string operator = 2;
+  bool isApproveForAll = 3;
+}
+
+message MsgSetApproveForAllResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

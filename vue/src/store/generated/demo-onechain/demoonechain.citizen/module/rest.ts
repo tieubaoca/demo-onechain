@@ -57,6 +57,8 @@ export interface CitizenMsgMintCitizenResponse {
   citizen?: CitizenCitizen;
 }
 
+export type CitizenMsgSetApproveForAllResponse = object;
+
 export type CitizenMsgTransferOwnershipResponse = object;
 
 export interface CitizenOwner {

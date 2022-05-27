@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"demo-onechain/x/citizen/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -60,4 +61,17 @@ func (k Keeper) GetAllApprovalForAll(ctx sdk.Context) (list []types.ApprovalForA
 	}
 
 	return
+}
+
+func (k Keeper) FindOpearator(ctx sdk.Context, owner string, operator string) (int, bool) {
+	operators, found := k.GetApprovalForAll(ctx, owner)
+	if !found {
+		return 0, false
+	}
+	for i, op := range operators.Operators {
+		if op == operator {
+			return i, true
+		}
+	}
+	return 0, false
 }

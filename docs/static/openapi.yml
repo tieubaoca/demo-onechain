@@ -47655,6 +47655,8 @@ definitions:
                 method
 
                 signatures required by gogoproto.
+  demoonechain.citizen.MsgSetApproveForAllResponse:
+    type: object
   demoonechain.citizen.MsgTransferOwnershipResponse:
     type: object
   demoonechain.citizen.Owner:

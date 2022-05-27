@@ -33,6 +33,14 @@ export interface MsgApprove {
 
 export interface MsgApproveResponse {}
 
+export interface MsgSetApproveForAll {
+  creator: string;
+  operator: string;
+  isApproveForAll: boolean;
+}
+
+export interface MsgSetApproveForAllResponse {}
+
 const baseMsgTransferOwnership: object = { creator: "", newOwner: "" };
 
 export const MsgTransferOwnership = {
@@ -520,14 +528,172 @@ export const MsgApproveResponse = {
   },
 };
 
+const baseMsgSetApproveForAll: object = {
+  creator: "",
+  operator: "",
+  isApproveForAll: false,
+};
+
+export const MsgSetApproveForAll = {
+  encode(
+    message: MsgSetApproveForAll,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.operator !== "") {
+      writer.uint32(18).string(message.operator);
+    }
+    if (message.isApproveForAll === true) {
+      writer.uint32(24).bool(message.isApproveForAll);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetApproveForAll {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSetApproveForAll } as MsgSetApproveForAll;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.operator = reader.string();
+          break;
+        case 3:
+          message.isApproveForAll = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSetApproveForAll {
+    const message = { ...baseMsgSetApproveForAll } as MsgSetApproveForAll;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = String(object.operator);
+    } else {
+      message.operator = "";
+    }
+    if (
+      object.isApproveForAll !== undefined &&
+      object.isApproveForAll !== null
+    ) {
+      message.isApproveForAll = Boolean(object.isApproveForAll);
+    } else {
+      message.isApproveForAll = false;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSetApproveForAll): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.isApproveForAll !== undefined &&
+      (obj.isApproveForAll = message.isApproveForAll);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSetApproveForAll>): MsgSetApproveForAll {
+    const message = { ...baseMsgSetApproveForAll } as MsgSetApproveForAll;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    } else {
+      message.operator = "";
+    }
+    if (
+      object.isApproveForAll !== undefined &&
+      object.isApproveForAll !== null
+    ) {
+      message.isApproveForAll = object.isApproveForAll;
+    } else {
+      message.isApproveForAll = false;
+    }
+    return message;
+  },
+};
+
+const baseMsgSetApproveForAllResponse: object = {};
+
+export const MsgSetApproveForAllResponse = {
+  encode(
+    _: MsgSetApproveForAllResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgSetApproveForAllResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSetApproveForAllResponse,
+    } as MsgSetApproveForAllResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSetApproveForAllResponse {
+    const message = {
+      ...baseMsgSetApproveForAllResponse,
+    } as MsgSetApproveForAllResponse;
+    return message;
+  },
+
+  toJSON(_: MsgSetApproveForAllResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgSetApproveForAllResponse>
+  ): MsgSetApproveForAllResponse {
+    const message = {
+      ...baseMsgSetApproveForAllResponse,
+    } as MsgSetApproveForAllResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   TransferOwnership(
     request: MsgTransferOwnership
   ): Promise<MsgTransferOwnershipResponse>;
   MintCitizen(request: MsgMintCitizen): Promise<MsgMintCitizenResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   Approve(request: MsgApprove): Promise<MsgApproveResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SetApproveForAll(
+    request: MsgSetApproveForAll
+  ): Promise<MsgSetApproveForAllResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -569,6 +735,20 @@ export class MsgClientImpl implements Msg {
       data
     );
     return promise.then((data) => MsgApproveResponse.decode(new Reader(data)));
+  }
+
+  SetApproveForAll(
+    request: MsgSetApproveForAll
+  ): Promise<MsgSetApproveForAllResponse> {
+    const data = MsgSetApproveForAll.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Msg",
+      "SetApproveForAll",
+      data
+    );
+    return promise.then((data) =>
+      MsgSetApproveForAllResponse.decode(new Reader(data))
+    );
   }
 }
 
