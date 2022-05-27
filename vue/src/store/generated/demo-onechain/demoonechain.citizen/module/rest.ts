@@ -16,7 +16,7 @@ export interface CitizenApproval {
 
 export interface CitizenApprovalForAll {
   owner?: string;
-  operators?: string;
+  operators?: string[];
 }
 
 export interface CitizenCitizen {
@@ -50,6 +50,8 @@ export interface CitizenMetadata {
   /** @format int64 */
   createTime?: string;
 }
+
+export type CitizenMsgApproveResponse = object;
 
 export interface CitizenMsgMintCitizenResponse {
   citizen?: CitizenCitizen;

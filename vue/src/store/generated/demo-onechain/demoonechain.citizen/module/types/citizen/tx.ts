@@ -24,6 +24,15 @@ export interface MsgMintCitizenResponse {
   citizen: Citizen | undefined;
 }
 
+export interface MsgApprove {
+  creator: string;
+  citizenId: string;
+  operator: string;
+  isApproval: boolean;
+}
+
+export interface MsgApproveResponse {}
+
 const baseMsgTransferOwnership: object = { creator: "", newOwner: "" };
 
 export const MsgTransferOwnership = {
@@ -362,13 +371,163 @@ export const MsgMintCitizenResponse = {
   },
 };
 
+const baseMsgApprove: object = {
+  creator: "",
+  citizenId: "",
+  operator: "",
+  isApproval: false,
+};
+
+export const MsgApprove = {
+  encode(message: MsgApprove, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.citizenId !== "") {
+      writer.uint32(18).string(message.citizenId);
+    }
+    if (message.operator !== "") {
+      writer.uint32(26).string(message.operator);
+    }
+    if (message.isApproval === true) {
+      writer.uint32(32).bool(message.isApproval);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgApprove {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgApprove } as MsgApprove;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.citizenId = reader.string();
+          break;
+        case 3:
+          message.operator = reader.string();
+          break;
+        case 4:
+          message.isApproval = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgApprove {
+    const message = { ...baseMsgApprove } as MsgApprove;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = String(object.citizenId);
+    } else {
+      message.citizenId = "";
+    }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = String(object.operator);
+    } else {
+      message.operator = "";
+    }
+    if (object.isApproval !== undefined && object.isApproval !== null) {
+      message.isApproval = Boolean(object.isApproval);
+    } else {
+      message.isApproval = false;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgApprove): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.citizenId !== undefined && (obj.citizenId = message.citizenId);
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.isApproval !== undefined && (obj.isApproval = message.isApproval);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgApprove>): MsgApprove {
+    const message = { ...baseMsgApprove } as MsgApprove;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = object.citizenId;
+    } else {
+      message.citizenId = "";
+    }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    } else {
+      message.operator = "";
+    }
+    if (object.isApproval !== undefined && object.isApproval !== null) {
+      message.isApproval = object.isApproval;
+    } else {
+      message.isApproval = false;
+    }
+    return message;
+  },
+};
+
+const baseMsgApproveResponse: object = {};
+
+export const MsgApproveResponse = {
+  encode(_: MsgApproveResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgApproveResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgApproveResponse } as MsgApproveResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgApproveResponse {
+    const message = { ...baseMsgApproveResponse } as MsgApproveResponse;
+    return message;
+  },
+
+  toJSON(_: MsgApproveResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgApproveResponse>): MsgApproveResponse {
+    const message = { ...baseMsgApproveResponse } as MsgApproveResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   TransferOwnership(
     request: MsgTransferOwnership
   ): Promise<MsgTransferOwnershipResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   MintCitizen(request: MsgMintCitizen): Promise<MsgMintCitizenResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Approve(request: MsgApprove): Promise<MsgApproveResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -400,6 +559,16 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) =>
       MsgMintCitizenResponse.decode(new Reader(data))
     );
+  }
+
+  Approve(request: MsgApprove): Promise<MsgApproveResponse> {
+    const data = MsgApprove.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Msg",
+      "Approve",
+      data
+    );
+    return promise.then((data) => MsgApproveResponse.decode(new Reader(data)));
   }
 }
 

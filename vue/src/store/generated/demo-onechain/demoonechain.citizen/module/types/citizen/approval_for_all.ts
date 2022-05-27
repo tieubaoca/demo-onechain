@@ -5,7 +5,7 @@ export const protobufPackage = "demoonechain.citizen";
 
 export interface ApprovalForAll {
   owner: string;
-  operators: string;
+  operators: string[];
 }
 
 const baseApprovalForAll: object = { owner: "", operators: "" };
@@ -15,8 +15,8 @@ export const ApprovalForAll = {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
-    if (message.operators !== "") {
-      writer.uint32(18).string(message.operators);
+    for (const v of message.operators) {
+      writer.uint32(18).string(v!);
     }
     return writer;
   },
@@ -25,6 +25,7 @@ export const ApprovalForAll = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseApprovalForAll } as ApprovalForAll;
+    message.operators = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -32,7 +33,7 @@ export const ApprovalForAll = {
           message.owner = reader.string();
           break;
         case 2:
-          message.operators = reader.string();
+          message.operators.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -44,15 +45,16 @@ export const ApprovalForAll = {
 
   fromJSON(object: any): ApprovalForAll {
     const message = { ...baseApprovalForAll } as ApprovalForAll;
+    message.operators = [];
     if (object.owner !== undefined && object.owner !== null) {
       message.owner = String(object.owner);
     } else {
       message.owner = "";
     }
     if (object.operators !== undefined && object.operators !== null) {
-      message.operators = String(object.operators);
-    } else {
-      message.operators = "";
+      for (const e of object.operators) {
+        message.operators.push(String(e));
+      }
     }
     return message;
   },
@@ -60,21 +62,26 @@ export const ApprovalForAll = {
   toJSON(message: ApprovalForAll): unknown {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
-    message.operators !== undefined && (obj.operators = message.operators);
+    if (message.operators) {
+      obj.operators = message.operators.map((e) => e);
+    } else {
+      obj.operators = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<ApprovalForAll>): ApprovalForAll {
     const message = { ...baseApprovalForAll } as ApprovalForAll;
+    message.operators = [];
     if (object.owner !== undefined && object.owner !== null) {
       message.owner = object.owner;
     } else {
       message.owner = "";
     }
     if (object.operators !== undefined && object.operators !== null) {
-      message.operators = object.operators;
-    } else {
-      message.operators = "";
+      for (const e of object.operators) {
+        message.operators.push(e);
+      }
     }
     return message;
   },

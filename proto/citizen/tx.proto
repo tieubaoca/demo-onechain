@@ -10,6 +10,7 @@ option go_package = "demo-onechain/x/citizen/types";
 service Msg {
       rpc TransferOwnership(MsgTransferOwnership) returns (MsgTransferOwnershipResponse);
   rpc MintCitizen(MsgMintCitizen) returns (MsgMintCitizenResponse);
+  rpc Approve(MsgApprove) returns (MsgApproveResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -32,6 +33,16 @@ message MsgMintCitizen {
 
 message MsgMintCitizenResponse {
   Citizen citizen = 1;
+}
+
+message MsgApprove {
+  string creator = 1;
+  string citizenId = 2;
+  string operator = 3;
+  bool isApproval = 4;
+}
+
+message MsgApproveResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

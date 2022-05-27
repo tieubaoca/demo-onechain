@@ -4,13 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgTransferOwnership } from "./types/citizen/tx";
 import { MsgMintCitizen } from "./types/citizen/tx";
+import { MsgTransferOwnership } from "./types/citizen/tx";
+import { MsgApprove } from "./types/citizen/tx";
 
 
 const types = [
-  ["/demoonechain.citizen.MsgTransferOwnership", MsgTransferOwnership],
   ["/demoonechain.citizen.MsgMintCitizen", MsgMintCitizen],
+  ["/demoonechain.citizen.MsgTransferOwnership", MsgTransferOwnership],
+  ["/demoonechain.citizen.MsgApprove", MsgApprove],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -43,8 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgTransferOwnership: (data: MsgTransferOwnership): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransferOwnership", value: MsgTransferOwnership.fromPartial( data ) }),
     msgMintCitizen: (data: MsgMintCitizen): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgMintCitizen", value: MsgMintCitizen.fromPartial( data ) }),
+    msgTransferOwnership: (data: MsgTransferOwnership): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransferOwnership", value: MsgTransferOwnership.fromPartial( data ) }),
+    msgApprove: (data: MsgApprove): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgApprove", value: MsgApprove.fromPartial( data ) }),
     
   };
 };

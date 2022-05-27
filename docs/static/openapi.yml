@@ -19932,7 +19932,9 @@ paths:
                     owner:
                       type: string
                     operators:
-                      type: string
+                      type: array
+                      items:
+                        type: string
               pagination:
                 type: object
                 properties:
@@ -20053,7 +20055,9 @@ paths:
                   owner:
                     type: string
                   operators:
-                    type: string
+                    type: array
+                    items:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -47536,7 +47540,9 @@ definitions:
       owner:
         type: string
       operators:
-        type: string
+        type: array
+        items:
+          type: string
   demoonechain.citizen.Citizen:
     type: object
     properties:
@@ -47608,6 +47614,8 @@ definitions:
       createTime:
         type: string
         format: int64
+  demoonechain.citizen.MsgApproveResponse:
+    type: object
   demoonechain.citizen.MsgMintCitizenResponse:
     type: object
     properties:
@@ -47668,7 +47676,9 @@ definitions:
             owner:
               type: string
             operators:
-              type: string
+              type: array
+              items:
+                type: string
       pagination:
         type: object
         properties:
@@ -47920,7 +47930,9 @@ definitions:
           owner:
             type: string
           operators:
-            type: string
+            type: array
+            items:
+              type: string
   demoonechain.citizen.QueryGetApprovalResponse:
     type: object
     properties:
