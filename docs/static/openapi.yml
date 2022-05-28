@@ -47659,6 +47659,8 @@ definitions:
     type: object
   demoonechain.citizen.MsgTransferOwnershipResponse:
     type: object
+  demoonechain.citizen.MsgTransferResponse:
+    type: object
   demoonechain.citizen.Owner:
     type: object
     properties:

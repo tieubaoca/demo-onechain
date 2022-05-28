@@ -12,6 +12,7 @@ service Msg {
   rpc MintCitizen(MsgMintCitizen) returns (MsgMintCitizenResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc SetApproveForAll(MsgSetApproveForAll) returns (MsgSetApproveForAllResponse);
+  rpc Transfer(MsgTransfer) returns (MsgTransferResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -53,6 +54,16 @@ message MsgSetApproveForAll {
 }
 
 message MsgSetApproveForAllResponse {
+}
+
+message MsgTransfer {
+  string creator = 1;
+  string from = 2;
+  string to = 3;
+  string citizenId = 4;
+}
+
+message MsgTransferResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

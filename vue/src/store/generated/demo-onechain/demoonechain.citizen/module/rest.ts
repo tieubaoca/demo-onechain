@@ -61,6 +61,8 @@ export type CitizenMsgSetApproveForAllResponse = object;
 
 export type CitizenMsgTransferOwnershipResponse = object;
 
+export type CitizenMsgTransferResponse = object;
+
 export interface CitizenOwner {
   owner?: string;
 }

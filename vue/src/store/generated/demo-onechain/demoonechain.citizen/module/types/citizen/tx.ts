@@ -41,6 +41,15 @@ export interface MsgSetApproveForAll {
 
 export interface MsgSetApproveForAllResponse {}
 
+export interface MsgTransfer {
+  creator: string;
+  from: string;
+  to: string;
+  citizenId: string;
+}
+
+export interface MsgTransferResponse {}
+
 const baseMsgTransferOwnership: object = { creator: "", newOwner: "" };
 
 export const MsgTransferOwnership = {
@@ -683,6 +692,155 @@ export const MsgSetApproveForAllResponse = {
   },
 };
 
+const baseMsgTransfer: object = {
+  creator: "",
+  from: "",
+  to: "",
+  citizenId: "",
+};
+
+export const MsgTransfer = {
+  encode(message: MsgTransfer, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.from !== "") {
+      writer.uint32(18).string(message.from);
+    }
+    if (message.to !== "") {
+      writer.uint32(26).string(message.to);
+    }
+    if (message.citizenId !== "") {
+      writer.uint32(34).string(message.citizenId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgTransfer {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgTransfer } as MsgTransfer;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.from = reader.string();
+          break;
+        case 3:
+          message.to = reader.string();
+          break;
+        case 4:
+          message.citizenId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgTransfer {
+    const message = { ...baseMsgTransfer } as MsgTransfer;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = String(object.from);
+    } else {
+      message.from = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = String(object.to);
+    } else {
+      message.to = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = String(object.citizenId);
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgTransfer): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
+    message.citizenId !== undefined && (obj.citizenId = message.citizenId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgTransfer>): MsgTransfer {
+    const message = { ...baseMsgTransfer } as MsgTransfer;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    } else {
+      message.from = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    } else {
+      message.to = "";
+    }
+    if (object.citizenId !== undefined && object.citizenId !== null) {
+      message.citizenId = object.citizenId;
+    } else {
+      message.citizenId = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgTransferResponse: object = {};
+
+export const MsgTransferResponse = {
+  encode(_: MsgTransferResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgTransferResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgTransferResponse } as MsgTransferResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgTransferResponse {
+    const message = { ...baseMsgTransferResponse } as MsgTransferResponse;
+    return message;
+  },
+
+  toJSON(_: MsgTransferResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgTransferResponse>): MsgTransferResponse {
+    const message = { ...baseMsgTransferResponse } as MsgTransferResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   TransferOwnership(
@@ -690,10 +848,11 @@ export interface Msg {
   ): Promise<MsgTransferOwnershipResponse>;
   MintCitizen(request: MsgMintCitizen): Promise<MsgMintCitizenResponse>;
   Approve(request: MsgApprove): Promise<MsgApproveResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SetApproveForAll(
     request: MsgSetApproveForAll
   ): Promise<MsgSetApproveForAllResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Transfer(request: MsgTransfer): Promise<MsgTransferResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -749,6 +908,16 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) =>
       MsgSetApproveForAllResponse.decode(new Reader(data))
     );
+  }
+
+  Transfer(request: MsgTransfer): Promise<MsgTransferResponse> {
+    const data = MsgTransfer.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Msg",
+      "Transfer",
+      data
+    );
+    return promise.then((data) => MsgTransferResponse.decode(new Reader(data)));
   }
 }
 

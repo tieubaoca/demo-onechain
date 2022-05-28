@@ -26,12 +26,15 @@ func (k msgServer) SetApproveForAll(goCtx context.Context, msg *types.MsgSetAppr
 			Operators: []string{},
 		}
 	}
-	index, f := k.FindOpearator(ctx, msg.Creator, msg.Operator)
-	if msg.IsApproveForAll && !f {
+	index, found := k.FindOpearator(ctx, msg.Creator, msg.Operator)
+	if msg.IsApproveForAll && !found {
 		operators.Operators = append(operators.Operators, msg.Operator)
-	} else if !msg.IsApproveForAll && f {
+	} else if !msg.IsApproveForAll && found {
 		operators.Operators = append(operators.Operators[:index], operators.Operators[index+1:]...)
-
+		if len(operators.Operators) == 0 {
+			k.RemoveApprovalForAll(ctx, msg.Creator)
+			return &types.MsgSetApproveForAllResponse{}, nil
+		}
 	}
 
 	k.SetApprovalForAll(ctx, operators)

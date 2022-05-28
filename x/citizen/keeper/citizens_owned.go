@@ -83,7 +83,11 @@ func (k Keeper) TruncateCitizensOwned(ctx sdk.Context, owner string, citizenId s
 	for i, v := range citizenOwned.CitizenIds {
 		if v == citizenId {
 			citizenOwned.CitizenIds = append(citizenOwned.CitizenIds[:i], citizenOwned.CitizenIds[i+1:]...)
-			k.SetCitizensOwned(ctx, citizenOwned)
+			if len(citizenOwned.CitizenIds) == 0 {
+				k.RemoveCitizensOwned(ctx, citizenOwned.Owner)
+			} else {
+				k.SetCitizensOwned(ctx, citizenOwned)
+			}
 			return &citizenOwned, nil
 		}
 	}
