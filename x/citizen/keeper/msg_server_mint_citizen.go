@@ -32,6 +32,7 @@ func (k msgServer) MintCitizen(goCtx context.Context, msg *types.MsgMintCitizen)
 			Author:      msg.Creator,
 			CreateTime:  ctx.BlockTime().Unix(),
 		},
+		Assets: []sdk.Coin{},
 	}
 
 	k.AppendCitizenIds(ctx, types.CitizenIds{

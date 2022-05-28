@@ -6,6 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -547,6 +549,114 @@ func (m *MsgTransferResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgTransferResponse proto.InternalMessageInfo
 
+type MsgTransferCoinsFromAccountToCitizen struct {
+	Creator string       `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	From    string       `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
+	To      string       `protobuf:"bytes,3,opt,name=to,proto3" json:"to,omitempty"`
+	Amounts []types.Coin `protobuf:"bytes,4,rep,name=amounts,proto3" json:"amounts"`
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) Reset()         { *m = MsgTransferCoinsFromAccountToCitizen{} }
+func (m *MsgTransferCoinsFromAccountToCitizen) String() string { return proto.CompactTextString(m) }
+func (*MsgTransferCoinsFromAccountToCitizen) ProtoMessage()    {}
+func (*MsgTransferCoinsFromAccountToCitizen) Descriptor() ([]byte, []int) {
+	return fileDescriptor_407143062e375738, []int{10}
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgTransferCoinsFromAccountToCitizen.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgTransferCoinsFromAccountToCitizen.Merge(m, src)
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgTransferCoinsFromAccountToCitizen.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgTransferCoinsFromAccountToCitizen proto.InternalMessageInfo
+
+func (m *MsgTransferCoinsFromAccountToCitizen) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) GetFrom() string {
+	if m != nil {
+		return m.From
+	}
+	return ""
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) GetTo() string {
+	if m != nil {
+		return m.To
+	}
+	return ""
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) GetAmounts() []types.Coin {
+	if m != nil {
+		return m.Amounts
+	}
+	return nil
+}
+
+type MsgTransferCoinsFromAccountToCitizenResponse struct {
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) Reset() {
+	*m = MsgTransferCoinsFromAccountToCitizenResponse{}
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) String() string {
+	return proto.CompactTextString(m)
+}
+func (*MsgTransferCoinsFromAccountToCitizenResponse) ProtoMessage() {}
+func (*MsgTransferCoinsFromAccountToCitizenResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_407143062e375738, []int{11}
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgTransferCoinsFromAccountToCitizenResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgTransferCoinsFromAccountToCitizenResponse.Merge(m, src)
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgTransferCoinsFromAccountToCitizenResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgTransferCoinsFromAccountToCitizenResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgTransferOwnership)(nil), "demoonechain.citizen.MsgTransferOwnership")
 	proto.RegisterType((*MsgTransferOwnershipResponse)(nil), "demoonechain.citizen.MsgTransferOwnershipResponse")
@@ -558,45 +668,55 @@ func init() {
 	proto.RegisterType((*MsgSetApproveForAllResponse)(nil), "demoonechain.citizen.MsgSetApproveForAllResponse")
 	proto.RegisterType((*MsgTransfer)(nil), "demoonechain.citizen.MsgTransfer")
 	proto.RegisterType((*MsgTransferResponse)(nil), "demoonechain.citizen.MsgTransferResponse")
+	proto.RegisterType((*MsgTransferCoinsFromAccountToCitizen)(nil), "demoonechain.citizen.MsgTransferCoinsFromAccountToCitizen")
+	proto.RegisterType((*MsgTransferCoinsFromAccountToCitizenResponse)(nil), "demoonechain.citizen.MsgTransferCoinsFromAccountToCitizenResponse")
 }
 
 func init() { proto.RegisterFile("citizen/tx.proto", fileDescriptor_407143062e375738) }
 
 var fileDescriptor_407143062e375738 = []byte{
-	// 524 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
-	0x10, 0x8e, 0x9d, 0xb4, 0x71, 0x27, 0x52, 0x09, 0x4b, 0x8a, 0x2c, 0xd3, 0x58, 0xc1, 0xe2, 0x90,
-	0x22, 0x48, 0x44, 0x38, 0xf4, 0x5c, 0x90, 0x90, 0x90, 0xb0, 0x10, 0x01, 0x24, 0xc4, 0xcd, 0x24,
-	0x5b, 0x77, 0xa5, 0xd4, 0xbb, 0xda, 0xdd, 0xd2, 0xc2, 0xa9, 0x8f, 0xc0, 0x33, 0xf0, 0x34, 0x1c,
-	0x7b, 0xe4, 0x88, 0x92, 0x17, 0x41, 0x5d, 0xef, 0x6e, 0x5d, 0xd7, 0xf9, 0x39, 0xd9, 0x33, 0xf3,
-	0xcd, 0x7c, 0xdf, 0xce, 0x7e, 0x36, 0xb4, 0x27, 0x44, 0x92, 0x9f, 0x38, 0x1b, 0xca, 0x8b, 0x01,
-	0xe3, 0x54, 0x52, 0xd4, 0x99, 0xe2, 0x53, 0x4a, 0x33, 0x3c, 0x39, 0x49, 0x48, 0x36, 0xd0, 0xe5,
-	0x60, 0xcf, 0xe0, 0xf4, 0x33, 0x07, 0x47, 0xef, 0xa0, 0x13, 0x8b, 0xf4, 0x13, 0x4f, 0x32, 0x71,
-	0x8c, 0xf9, 0xfb, 0xf3, 0x0c, 0x73, 0x71, 0x42, 0x18, 0xf2, 0xa1, 0x39, 0xe1, 0x38, 0x91, 0x94,
-	0xfb, 0x4e, 0xcf, 0xe9, 0xef, 0x8c, 0x4d, 0x88, 0x02, 0xf0, 0x32, 0x7c, 0xae, 0x90, 0xbe, 0xab,
-	0x4a, 0x36, 0x8e, 0x42, 0xd8, 0xaf, 0x9a, 0x36, 0xc6, 0x82, 0xd1, 0x4c, 0xe0, 0xe8, 0xb7, 0x03,
-	0xbb, 0xb1, 0x48, 0x63, 0x92, 0xc9, 0xd7, 0xb9, 0x8c, 0x15, 0x44, 0xbb, 0xe0, 0x4a, 0xaa, 0x29,
-	0x5c, 0x49, 0xd1, 0x3e, 0xec, 0x68, 0xed, 0x6f, 0xa7, 0x7e, 0x5d, 0xa5, 0x6f, 0x12, 0xa8, 0x03,
-	0x5b, 0x92, 0xc8, 0x19, 0xf6, 0x1b, 0xaa, 0x92, 0x07, 0xa8, 0x07, 0xad, 0x29, 0x16, 0x13, 0x4e,
-	0x98, 0x24, 0x34, 0xf3, 0xb7, 0x54, 0xad, 0x98, 0x42, 0x6d, 0xa8, 0x9f, 0x71, 0xe2, 0x6f, 0xab,
-	0xca, 0xf5, 0x6b, 0xf4, 0x01, 0x1e, 0xde, 0xd6, 0x68, 0xe4, 0xa3, 0x43, 0x68, 0x6a, 0x42, 0xa5,
-	0xb5, 0x35, 0xea, 0x0e, 0xaa, 0x76, 0x3d, 0x30, 0x7d, 0x06, 0x1d, 0x5d, 0x3a, 0x00, 0xb1, 0x48,
-	0x8f, 0x18, 0xe3, 0xf4, 0x3b, 0x5e, 0x71, 0xe6, 0x5b, 0x67, 0x74, 0xcb, 0x67, 0x0c, 0xc0, 0xa3,
-	0x0c, 0x73, 0xd5, 0x98, 0x2f, 0xc0, 0xc6, 0x28, 0x04, 0x20, 0x22, 0x27, 0x48, 0x66, 0x6a, 0x09,
-	0xde, 0xb8, 0x90, 0x89, 0x3a, 0x80, 0x6e, 0x14, 0xd8, 0x0b, 0x39, 0x83, 0x07, 0xb1, 0x48, 0x3f,
-	0x62, 0xa9, 0x0b, 0x6f, 0x28, 0x3f, 0x9a, 0xcd, 0x56, 0xdf, 0xbe, 0x95, 0xe0, 0x96, 0x24, 0xf4,
-	0xe1, 0x9e, 0x21, 0xd4, 0x83, 0x94, 0x4a, 0x6f, 0x5c, 0x4e, 0x47, 0x5d, 0x78, 0x54, 0x41, 0x6b,
-	0x55, 0x11, 0x68, 0x15, 0x6c, 0xb4, 0x42, 0x0d, 0x82, 0xc6, 0x31, 0xa7, 0xa7, 0x5a, 0x89, 0x7a,
-	0xd7, 0xb6, 0xa9, 0x57, 0xdb, 0xa6, 0x51, 0x5a, 0x69, 0xb4, 0xa7, 0x16, 0x60, 0xa8, 0x8c, 0x82,
-	0xd1, 0x65, 0x03, 0xea, 0xb1, 0x48, 0x91, 0x80, 0xfb, 0x77, 0xbf, 0x8d, 0xa7, 0xd5, 0xb7, 0x5e,
-	0xe5, 0xfc, 0x60, 0xb4, 0x39, 0xd6, 0xda, 0x2c, 0x81, 0x56, 0xf1, 0x0b, 0x79, 0xb2, 0x74, 0x44,
-	0x01, 0x15, 0x3c, 0xdb, 0x04, 0x65, 0x29, 0x3e, 0x43, 0xd3, 0x98, 0xb1, 0xb7, 0xb4, 0x51, 0x23,
-	0x82, 0xfe, 0x3a, 0x84, 0x1d, 0xcb, 0xa0, 0x7d, 0xc7, 0x4b, 0x07, 0x4b, 0xbb, 0xcb, 0xd0, 0xe0,
-	0xc5, 0xc6, 0x50, 0xcb, 0xf8, 0x05, 0x3c, 0xeb, 0x93, 0xc7, 0x6b, 0x77, 0x1d, 0x1c, 0xac, 0x85,
-	0x98, 0xc9, 0xaf, 0x0e, 0xff, 0xcc, 0x43, 0xe7, 0x6a, 0x1e, 0x3a, 0xff, 0xe6, 0xa1, 0xf3, 0x6b,
-	0x11, 0xd6, 0xae, 0x16, 0x61, 0xed, 0xef, 0x22, 0xac, 0x7d, 0xed, 0x5e, 0xcf, 0x78, 0x6e, 0x86,
-	0x0c, 0x2f, 0x86, 0xf6, 0x17, 0xfc, 0x83, 0x61, 0xf1, 0x6d, 0x5b, 0xfd, 0x59, 0x5f, 0xfe, 0x0f,
-	0x00, 0x00, 0xff, 0xff, 0x95, 0x65, 0xd6, 0x8b, 0x9a, 0x05, 0x00, 0x00,
+	// 647 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x55, 0xcd, 0x6e, 0x13, 0x3d,
+	0x14, 0xcd, 0x24, 0x69, 0x93, 0xde, 0x48, 0xfd, 0xfa, 0x99, 0x14, 0x0d, 0x43, 0x3b, 0xa4, 0xa3,
+	0x2e, 0x52, 0x54, 0x66, 0xd4, 0xb0, 0xa8, 0x60, 0xd7, 0x56, 0xaa, 0x84, 0x44, 0x84, 0x08, 0x45,
+	0x42, 0xec, 0xa6, 0x53, 0x77, 0x6a, 0x29, 0xb1, 0x47, 0xb6, 0xfb, 0x03, 0x2b, 0x1e, 0x81, 0x37,
+	0x40, 0x02, 0x89, 0x67, 0xe9, 0xb2, 0x4b, 0x56, 0x08, 0xb5, 0x2f, 0x82, 0xe2, 0xb1, 0xdd, 0x34,
+	0xcd, 0x9f, 0x58, 0x8d, 0x7d, 0xef, 0xb9, 0xe7, 0x1c, 0xdb, 0xf7, 0x6a, 0x60, 0x29, 0x21, 0x92,
+	0x7c, 0xc6, 0x34, 0x92, 0x17, 0x61, 0xc6, 0x99, 0x64, 0xa8, 0x7e, 0x84, 0x7b, 0x8c, 0x51, 0x9c,
+	0x9c, 0xc4, 0x84, 0x86, 0x3a, 0xed, 0xf9, 0x09, 0x13, 0x3d, 0x26, 0xa2, 0xc3, 0x58, 0xe0, 0xe8,
+	0x6c, 0xeb, 0x10, 0xcb, 0x78, 0x2b, 0x4a, 0x18, 0xa1, 0x79, 0x95, 0x57, 0x4f, 0x59, 0xca, 0xd4,
+	0x32, 0xea, 0xaf, 0x74, 0x74, 0xd9, 0xb0, 0xeb, 0x6f, 0x1e, 0x0e, 0x5e, 0x43, 0xbd, 0x2d, 0xd2,
+	0x03, 0x1e, 0x53, 0x71, 0x8c, 0xf9, 0x9b, 0x73, 0x8a, 0xb9, 0x38, 0x21, 0x19, 0x72, 0xa1, 0x92,
+	0x70, 0x1c, 0x4b, 0xc6, 0x5d, 0xa7, 0xe1, 0x34, 0x17, 0x3a, 0x66, 0x8b, 0x3c, 0xa8, 0x52, 0x7c,
+	0xae, 0x90, 0x6e, 0x51, 0xa5, 0xec, 0x3e, 0xf0, 0x61, 0x65, 0x14, 0x5b, 0x07, 0x8b, 0x8c, 0x51,
+	0x81, 0x83, 0xef, 0x0e, 0x2c, 0xb6, 0x45, 0xda, 0x26, 0x54, 0xee, 0xe5, 0x36, 0x26, 0x08, 0x2d,
+	0x42, 0x51, 0x32, 0x2d, 0x51, 0x94, 0x0c, 0xad, 0xc0, 0x82, 0xf6, 0xfe, 0xea, 0xc8, 0x2d, 0xa9,
+	0xf0, 0x6d, 0x00, 0xd5, 0x61, 0x4e, 0x12, 0xd9, 0xc5, 0x6e, 0x59, 0x65, 0xf2, 0x0d, 0x6a, 0x40,
+	0xed, 0x08, 0x8b, 0x84, 0x93, 0x4c, 0x12, 0x46, 0xdd, 0x39, 0x95, 0x1b, 0x0c, 0xa1, 0x25, 0x28,
+	0x9d, 0x72, 0xe2, 0xce, 0xab, 0x4c, 0x7f, 0x19, 0xbc, 0x85, 0x87, 0x77, 0x3d, 0x1a, 0xfb, 0x68,
+	0x1b, 0x2a, 0x5a, 0x50, 0x79, 0xad, 0xb5, 0x56, 0xc3, 0x51, 0x2f, 0x14, 0x9a, 0x3a, 0x83, 0x0e,
+	0xbe, 0x38, 0x00, 0x6d, 0x91, 0xee, 0x64, 0x19, 0x67, 0x67, 0x78, 0xc2, 0x99, 0xef, 0x9c, 0xb1,
+	0x38, 0x7c, 0x46, 0x0f, 0xaa, 0x2c, 0xc3, 0x5c, 0x15, 0xe6, 0x17, 0x60, 0xf7, 0xc8, 0x07, 0x20,
+	0x22, 0x17, 0x88, 0xbb, 0xea, 0x12, 0xaa, 0x9d, 0x81, 0x48, 0x50, 0x07, 0x74, 0xeb, 0xc0, 0x3e,
+	0xc8, 0x29, 0x3c, 0x68, 0x8b, 0xf4, 0x1d, 0x96, 0x3a, 0xb1, 0xcf, 0xf8, 0x4e, 0xb7, 0x3b, 0xf9,
+	0xf5, 0xad, 0x85, 0xe2, 0x90, 0x85, 0x26, 0xfc, 0x67, 0x04, 0x35, 0x91, 0x72, 0x59, 0xed, 0x0c,
+	0x87, 0x83, 0x55, 0x78, 0x3c, 0x42, 0xd6, 0xba, 0x22, 0x50, 0x1b, 0x68, 0xa3, 0x09, 0x6e, 0x10,
+	0x94, 0x8f, 0x39, 0xeb, 0x69, 0x27, 0x6a, 0xad, 0xdb, 0xa6, 0x34, 0xba, 0x6d, 0xca, 0x43, 0x57,
+	0x1a, 0x2c, 0xab, 0x0b, 0x30, 0x52, 0xd6, 0xc1, 0x37, 0x07, 0xd6, 0x07, 0xe2, 0x7b, 0x8c, 0x50,
+	0xb1, 0xcf, 0x59, 0x6f, 0x27, 0x49, 0xd8, 0x29, 0x95, 0x07, 0x6c, 0x7a, 0xfb, 0xce, 0xe2, 0xed,
+	0x05, 0x54, 0xe2, 0x5e, 0x9f, 0x50, 0xb8, 0xe5, 0x46, 0xa9, 0x59, 0x6b, 0x3d, 0x0a, 0xf3, 0xe1,
+	0x0e, 0xfb, 0xc3, 0x1d, 0xea, 0xe1, 0x0e, 0xfb, 0xf2, 0xbb, 0xe5, 0xcb, 0xdf, 0x4f, 0x0a, 0x1d,
+	0x83, 0x0f, 0x42, 0xd8, 0x9c, 0xc5, 0xa0, 0x39, 0x51, 0xeb, 0xe7, 0x1c, 0x94, 0xda, 0x22, 0x45,
+	0x02, 0xfe, 0xbf, 0x3f, 0xed, 0x4f, 0x47, 0xf7, 0xf1, 0xa8, 0x59, 0xf6, 0x5a, 0xb3, 0x63, 0xed,
+	0xe0, 0xc4, 0x50, 0x1b, 0x9c, 0xf9, 0xf5, 0xb1, 0x14, 0x03, 0x28, 0x6f, 0x73, 0x16, 0x94, 0x95,
+	0x78, 0x0f, 0x15, 0x33, 0x5e, 0x8d, 0xb1, 0x85, 0x1a, 0xe1, 0x35, 0xa7, 0x21, 0x2c, 0x6d, 0x06,
+	0x4b, 0xf7, 0xa6, 0x63, 0x63, 0x6c, 0xf5, 0x30, 0xd4, 0xdb, 0x9a, 0x19, 0x6a, 0x15, 0x3f, 0x40,
+	0xd5, 0x76, 0xfe, 0xda, 0xd4, 0xbb, 0xf6, 0x36, 0xa6, 0x42, 0x2c, 0xf3, 0x0f, 0x07, 0xd6, 0xa6,
+	0x77, 0xf4, 0xcb, 0xa9, 0x84, 0x63, 0x6b, 0xbd, 0xdd, 0x7f, 0xaf, 0x35, 0x2e, 0x77, 0xb7, 0x2f,
+	0xaf, 0x7d, 0xe7, 0xea, 0xda, 0x77, 0xfe, 0x5c, 0xfb, 0xce, 0xd7, 0x1b, 0xbf, 0x70, 0x75, 0xe3,
+	0x17, 0x7e, 0xdd, 0xf8, 0x85, 0x8f, 0xab, 0x7d, 0xf2, 0x67, 0x86, 0x3d, 0xba, 0x88, 0xec, 0x0f,
+	0xf3, 0x53, 0x86, 0xc5, 0xe1, 0xbc, 0xfa, 0xa3, 0x3d, 0xff, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xe0,
+	0xfa, 0x0a, 0xff, 0x48, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -616,6 +736,7 @@ type MsgClient interface {
 	Approve(ctx context.Context, in *MsgApprove, opts ...grpc.CallOption) (*MsgApproveResponse, error)
 	SetApproveForAll(ctx context.Context, in *MsgSetApproveForAll, opts ...grpc.CallOption) (*MsgSetApproveForAllResponse, error)
 	Transfer(ctx context.Context, in *MsgTransfer, opts ...grpc.CallOption) (*MsgTransferResponse, error)
+	TransferCoinsFromAccountToCitizen(ctx context.Context, in *MsgTransferCoinsFromAccountToCitizen, opts ...grpc.CallOption) (*MsgTransferCoinsFromAccountToCitizenResponse, error)
 }
 
 type msgClient struct {
@@ -671,6 +792,15 @@ func (c *msgClient) Transfer(ctx context.Context, in *MsgTransfer, opts ...grpc.
 	return out, nil
 }
 
+func (c *msgClient) TransferCoinsFromAccountToCitizen(ctx context.Context, in *MsgTransferCoinsFromAccountToCitizen, opts ...grpc.CallOption) (*MsgTransferCoinsFromAccountToCitizenResponse, error) {
+	out := new(MsgTransferCoinsFromAccountToCitizenResponse)
+	err := c.cc.Invoke(ctx, "/demoonechain.citizen.Msg/TransferCoinsFromAccountToCitizen", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	TransferOwnership(context.Context, *MsgTransferOwnership) (*MsgTransferOwnershipResponse, error)
@@ -678,6 +808,7 @@ type MsgServer interface {
 	Approve(context.Context, *MsgApprove) (*MsgApproveResponse, error)
 	SetApproveForAll(context.Context, *MsgSetApproveForAll) (*MsgSetApproveForAllResponse, error)
 	Transfer(context.Context, *MsgTransfer) (*MsgTransferResponse, error)
+	TransferCoinsFromAccountToCitizen(context.Context, *MsgTransferCoinsFromAccountToCitizen) (*MsgTransferCoinsFromAccountToCitizenResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -698,6 +829,9 @@ func (*UnimplementedMsgServer) SetApproveForAll(ctx context.Context, req *MsgSet
 }
 func (*UnimplementedMsgServer) Transfer(ctx context.Context, req *MsgTransfer) (*MsgTransferResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Transfer not implemented")
+}
+func (*UnimplementedMsgServer) TransferCoinsFromAccountToCitizen(ctx context.Context, req *MsgTransferCoinsFromAccountToCitizen) (*MsgTransferCoinsFromAccountToCitizenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransferCoinsFromAccountToCitizen not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -794,6 +928,24 @@ func _Msg_Transfer_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_TransferCoinsFromAccountToCitizen_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgTransferCoinsFromAccountToCitizen)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).TransferCoinsFromAccountToCitizen(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/demoonechain.citizen.Msg/TransferCoinsFromAccountToCitizen",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).TransferCoinsFromAccountToCitizen(ctx, req.(*MsgTransferCoinsFromAccountToCitizen))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "demoonechain.citizen.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -817,6 +969,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Transfer",
 			Handler:    _Msg_Transfer_Handler,
+		},
+		{
+			MethodName: "TransferCoinsFromAccountToCitizen",
+			Handler:    _Msg_TransferCoinsFromAccountToCitizen_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1204,6 +1360,87 @@ func (m *MsgTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgTransferCoinsFromAccountToCitizen) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Amounts) > 0 {
+		for iNdEx := len(m.Amounts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Amounts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.To) > 0 {
+		i -= len(m.To)
+		copy(dAtA[i:], m.To)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.To)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.From) > 0 {
+		i -= len(m.From)
+		copy(dAtA[i:], m.From)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.From)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1375,6 +1612,42 @@ func (m *MsgTransfer) Size() (n int) {
 }
 
 func (m *MsgTransferResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizen) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.From)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.To)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Amounts) > 0 {
+		for _, e := range m.Amounts {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2486,6 +2759,236 @@ func (m *MsgTransferResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgTransferCoinsFromAccountToCitizen) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgTransferCoinsFromAccountToCitizen: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgTransferCoinsFromAccountToCitizen: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.From = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field To", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.To = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amounts", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Amounts = append(m.Amounts, types.Coin{})
+			if err := m.Amounts[len(m.Amounts)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgTransferCoinsFromAccountToCitizenResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgTransferCoinsFromAccountToCitizenResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgTransferCoinsFromAccountToCitizenResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

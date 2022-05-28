@@ -2,6 +2,8 @@ syntax = "proto3";
 package demoonechain.citizen;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 import "citizen/citizen.proto";
 
 option go_package = "demo-onechain/x/citizen/types";
@@ -13,6 +15,7 @@ service Msg {
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc SetApproveForAll(MsgSetApproveForAll) returns (MsgSetApproveForAllResponse);
   rpc Transfer(MsgTransfer) returns (MsgTransferResponse);
+  rpc TransferCoinsFromAccountToCitizen(MsgTransferCoinsFromAccountToCitizen) returns (MsgTransferCoinsFromAccountToCitizenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -64,6 +67,16 @@ message MsgTransfer {
 }
 
 message MsgTransferResponse {
+}
+
+message MsgTransferCoinsFromAccountToCitizen {
+  string creator = 1;
+  string from = 2;
+  string to = 3;
+  repeated cosmos.base.v1beta1.Coin amounts = 4 [(gogoproto.nullable) = false];
+}
+
+message MsgTransferCoinsFromAccountToCitizenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Reader, Writer } from "protobufjs/minimal";
 import { Citizen } from "../citizen/citizen";
+import { Coin } from "../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "demoonechain.citizen";
 
@@ -49,6 +50,15 @@ export interface MsgTransfer {
 }
 
 export interface MsgTransferResponse {}
+
+export interface MsgTransferCoinsFromAccountToCitizen {
+  creator: string;
+  from: string;
+  to: string;
+  amounts: Coin[];
+}
+
+export interface MsgTransferCoinsFromAccountToCitizenResponse {}
 
 const baseMsgTransferOwnership: object = { creator: "", newOwner: "" };
 
@@ -841,6 +851,191 @@ export const MsgTransferResponse = {
   },
 };
 
+const baseMsgTransferCoinsFromAccountToCitizen: object = {
+  creator: "",
+  from: "",
+  to: "",
+};
+
+export const MsgTransferCoinsFromAccountToCitizen = {
+  encode(
+    message: MsgTransferCoinsFromAccountToCitizen,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.from !== "") {
+      writer.uint32(18).string(message.from);
+    }
+    if (message.to !== "") {
+      writer.uint32(26).string(message.to);
+    }
+    for (const v of message.amounts) {
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgTransferCoinsFromAccountToCitizen {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizen,
+    } as MsgTransferCoinsFromAccountToCitizen;
+    message.amounts = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.from = reader.string();
+          break;
+        case 3:
+          message.to = reader.string();
+          break;
+        case 4:
+          message.amounts.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgTransferCoinsFromAccountToCitizen {
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizen,
+    } as MsgTransferCoinsFromAccountToCitizen;
+    message.amounts = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = String(object.from);
+    } else {
+      message.from = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = String(object.to);
+    } else {
+      message.to = "";
+    }
+    if (object.amounts !== undefined && object.amounts !== null) {
+      for (const e of object.amounts) {
+        message.amounts.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgTransferCoinsFromAccountToCitizen): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
+    if (message.amounts) {
+      obj.amounts = message.amounts.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.amounts = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgTransferCoinsFromAccountToCitizen>
+  ): MsgTransferCoinsFromAccountToCitizen {
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizen,
+    } as MsgTransferCoinsFromAccountToCitizen;
+    message.amounts = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    } else {
+      message.from = "";
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    } else {
+      message.to = "";
+    }
+    if (object.amounts !== undefined && object.amounts !== null) {
+      for (const e of object.amounts) {
+        message.amounts.push(Coin.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgTransferCoinsFromAccountToCitizenResponse: object = {};
+
+export const MsgTransferCoinsFromAccountToCitizenResponse = {
+  encode(
+    _: MsgTransferCoinsFromAccountToCitizenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgTransferCoinsFromAccountToCitizenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizenResponse,
+    } as MsgTransferCoinsFromAccountToCitizenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgTransferCoinsFromAccountToCitizenResponse {
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizenResponse,
+    } as MsgTransferCoinsFromAccountToCitizenResponse;
+    return message;
+  },
+
+  toJSON(_: MsgTransferCoinsFromAccountToCitizenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgTransferCoinsFromAccountToCitizenResponse>
+  ): MsgTransferCoinsFromAccountToCitizenResponse {
+    const message = {
+      ...baseMsgTransferCoinsFromAccountToCitizenResponse,
+    } as MsgTransferCoinsFromAccountToCitizenResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   TransferOwnership(
@@ -851,8 +1046,11 @@ export interface Msg {
   SetApproveForAll(
     request: MsgSetApproveForAll
   ): Promise<MsgSetApproveForAllResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   Transfer(request: MsgTransfer): Promise<MsgTransferResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  TransferCoinsFromAccountToCitizen(
+    request: MsgTransferCoinsFromAccountToCitizen
+  ): Promise<MsgTransferCoinsFromAccountToCitizenResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -918,6 +1116,20 @@ export class MsgClientImpl implements Msg {
       data
     );
     return promise.then((data) => MsgTransferResponse.decode(new Reader(data)));
+  }
+
+  TransferCoinsFromAccountToCitizen(
+    request: MsgTransferCoinsFromAccountToCitizen
+  ): Promise<MsgTransferCoinsFromAccountToCitizenResponse> {
+    const data = MsgTransferCoinsFromAccountToCitizen.encode(request).finish();
+    const promise = this.rpc.request(
+      "demoonechain.citizen.Msg",
+      "TransferCoinsFromAccountToCitizen",
+      data
+    );
+    return promise.then((data) =>
+      MsgTransferCoinsFromAccountToCitizenResponse.decode(new Reader(data))
+    );
   }
 }
 

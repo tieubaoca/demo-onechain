@@ -59,6 +59,8 @@ export interface CitizenMsgMintCitizenResponse {
 
 export type CitizenMsgSetApproveForAllResponse = object;
 
+export type CitizenMsgTransferCoinsFromAccountToCitizenResponse = object;
+
 export type CitizenMsgTransferOwnershipResponse = object;
 
 export type CitizenMsgTransferResponse = object;
