@@ -581,33 +581,18 @@ export default {
 		},
 		
 		
-		async sendMsgTransferOwnership({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgMintCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgTransferOwnership(value)
+				const msg = await txClient.msgMintCitizen(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransferOwnership:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgTransferOwnership:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgApprove({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgApprove(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgApprove:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgApprove:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgMintCitizen:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -626,33 +611,18 @@ export default {
 				}
 			}
 		},
-		async sendMsgTransferCoinsFromAccountToCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgApprove({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgTransferCoinsFromAccountToCitizen(value)
+				const msg = await txClient.msgApprove(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgApprove:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgMintCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgMintCitizen(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgMintCitizen:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgApprove:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -671,30 +641,47 @@ export default {
 				}
 			}
 		},
-		
-		async MsgTransferOwnership({ rootGetters }, { value }) {
+		async sendMsgTransferOwnership({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgTransferOwnership(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgTransferOwnership:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTransferOwnership:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgTransferOwnership:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async MsgApprove({ rootGetters }, { value }) {
+		async sendMsgTransferCoinsFromAccountToCitizen({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgApprove(value)
+				const msg = await txClient.msgTransferCoinsFromAccountToCitizen(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
+		async MsgMintCitizen({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgMintCitizen(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgApprove:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgApprove:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgMintCitizen:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -711,29 +698,16 @@ export default {
 				}
 			}
 		},
-		async MsgTransferCoinsFromAccountToCitizen({ rootGetters }, { value }) {
+		async MsgApprove({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgTransferCoinsFromAccountToCitizen(value)
+				const msg = await txClient.msgApprove(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgApprove:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgMintCitizen({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgMintCitizen(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgMintCitizen:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgMintCitizen:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgApprove:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -747,6 +721,32 @@ export default {
 					throw new Error('TxClient:MsgSetApproveForAll:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSetApproveForAll:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTransferOwnership({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgTransferOwnership(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransferOwnership:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTransferOwnership:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTransferCoinsFromAccountToCitizen({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgTransferCoinsFromAccountToCitizen(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTransferCoinsFromAccountToCitizen:Create Could not create message: ' + e.message)
 				}
 			}
 		},
