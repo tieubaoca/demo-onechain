@@ -4,21 +4,21 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgMintCitizen } from "./types/citizen/tx";
-import { MsgTransfer } from "./types/citizen/tx";
-import { MsgApprove } from "./types/citizen/tx";
-import { MsgSetApproveForAll } from "./types/citizen/tx";
 import { MsgTransferOwnership } from "./types/citizen/tx";
+import { MsgApprove } from "./types/citizen/tx";
+import { MsgTransfer } from "./types/citizen/tx";
 import { MsgTransferCoinsFromAccountToCitizen } from "./types/citizen/tx";
+import { MsgMintCitizen } from "./types/citizen/tx";
+import { MsgSetApproveForAll } from "./types/citizen/tx";
 
 
 const types = [
-  ["/demoonechain.citizen.MsgMintCitizen", MsgMintCitizen],
-  ["/demoonechain.citizen.MsgTransfer", MsgTransfer],
-  ["/demoonechain.citizen.MsgApprove", MsgApprove],
-  ["/demoonechain.citizen.MsgSetApproveForAll", MsgSetApproveForAll],
   ["/demoonechain.citizen.MsgTransferOwnership", MsgTransferOwnership],
+  ["/demoonechain.citizen.MsgApprove", MsgApprove],
+  ["/demoonechain.citizen.MsgTransfer", MsgTransfer],
   ["/demoonechain.citizen.MsgTransferCoinsFromAccountToCitizen", MsgTransferCoinsFromAccountToCitizen],
+  ["/demoonechain.citizen.MsgMintCitizen", MsgMintCitizen],
+  ["/demoonechain.citizen.MsgSetApproveForAll", MsgSetApproveForAll],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -51,12 +51,12 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgMintCitizen: (data: MsgMintCitizen): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgMintCitizen", value: MsgMintCitizen.fromPartial( data ) }),
-    msgTransfer: (data: MsgTransfer): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransfer", value: MsgTransfer.fromPartial( data ) }),
-    msgApprove: (data: MsgApprove): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgApprove", value: MsgApprove.fromPartial( data ) }),
-    msgSetApproveForAll: (data: MsgSetApproveForAll): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgSetApproveForAll", value: MsgSetApproveForAll.fromPartial( data ) }),
     msgTransferOwnership: (data: MsgTransferOwnership): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransferOwnership", value: MsgTransferOwnership.fromPartial( data ) }),
+    msgApprove: (data: MsgApprove): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgApprove", value: MsgApprove.fromPartial( data ) }),
+    msgTransfer: (data: MsgTransfer): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransfer", value: MsgTransfer.fromPartial( data ) }),
     msgTransferCoinsFromAccountToCitizen: (data: MsgTransferCoinsFromAccountToCitizen): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgTransferCoinsFromAccountToCitizen", value: MsgTransferCoinsFromAccountToCitizen.fromPartial( data ) }),
+    msgMintCitizen: (data: MsgMintCitizen): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgMintCitizen", value: MsgMintCitizen.fromPartial( data ) }),
+    msgSetApproveForAll: (data: MsgSetApproveForAll): EncodeObject => ({ typeUrl: "/demoonechain.citizen.MsgSetApproveForAll", value: MsgSetApproveForAll.fromPartial( data ) }),
     
   };
 };

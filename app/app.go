@@ -188,9 +188,15 @@ var (
 )
 
 var (
-	// _ cosmoscmd.App           = (*App)(nil)
-	// _ servertypes.Application = (*App)(nil)
-	_ simapp.App = (*App)(nil)
+// _ cosmoscmd.App           = (*App)(nil)
+// _ servertypes.Application = (*App)(nil)
+// _ simapp.App = (*App)(nil)
+)
+
+var (
+	_ servertypes.Application = (*App)(nil)
+	_ simapp.App              = (*App)(nil)
+	// _ ibctesting.TestingApp   = (*App)(nil)
 )
 
 func init() {

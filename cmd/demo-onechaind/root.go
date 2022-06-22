@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -32,6 +33,8 @@ import (
 
 	"demo-onechain/app"
 
+	cmdcfg "demo-onechain/cmd/config"
+
 	ethermintclient "github.com/tharsis/ethermint/client"
 	"github.com/tharsis/ethermint/client/debug"
 	"github.com/tharsis/ethermint/crypto/hd"
@@ -39,7 +42,7 @@ import (
 	"github.com/tharsis/ethermint/server"
 	servercfg "github.com/tharsis/ethermint/server/config"
 	srvflags "github.com/tharsis/ethermint/server/flags"
-	ethermint "github.com/tharsis/ethermint/types"
+	// ethermint "github.com/tharsis/ethermint/types"
 )
 
 const EnvPrefix = "ONECHAIN"
@@ -62,7 +65,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 	rootCmd := &cobra.Command{
 		Use:   app.Name,
-		Short: "Ethermint Daemon",
+		Short: app.Name + " Daemon",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -83,7 +86,8 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 			}
 
 			// FIXME: replace AttoPhoton with bond denom
-			customAppTemplate, customAppConfig := servercfg.AppConfig(ethermint.AttoPhoton)
+			// customAppTemplate, customAppConfig := servercfg.AppConfig(cmdcfg.BaseDenom)
+			customAppTemplate, customAppConfig := initAppConfig()
 
 			return sdkserver.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig)
 		},
@@ -158,6 +162,22 @@ func queryCommand() *cobra.Command {
 	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
+}
+
+// initAppConfig helps to override default appConfig template and configs.
+// return "", nil if no custom configuration is required for the application.
+func initAppConfig() (string, interface{}) {
+	customAppTemplate, customAppConfig := servercfg.AppConfig(cmdcfg.BaseDenom)
+
+	srvCfg, ok := customAppConfig.(servercfg.Config)
+	if !ok {
+		panic(fmt.Errorf("unknown app config type %T", customAppConfig))
+	}
+
+	srvCfg.StateSync.SnapshotInterval = 1500
+	srvCfg.StateSync.SnapshotKeepRecent = 2
+
+	return customAppTemplate, srvCfg
 }
 
 func txCommand() *cobra.Command {

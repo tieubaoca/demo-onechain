@@ -9,7 +9,7 @@ import (
 
 	"demo-onechain/app"
 
-	cmdcfg "github.com/tharsis/ethermint/cmd/config"
+	cmdcfg "demo-onechain/cmd/config"
 )
 
 func main() {
