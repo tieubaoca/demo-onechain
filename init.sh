@@ -28,12 +28,12 @@ demo-onechaind keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 demo-onechaind init $MONIKER --chain-id $CHAINID
 
-# Change parameter token denominations to aphoton
-cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="aphoton"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
-cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="aphoton"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
-cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="aphoton"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
-cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="aphoton"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
-
+# Change parameter token denominations to ahihi
+cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["evm"]["params"]["evm_denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
 # increase block time (?)
 cat $HOME/.demo-onechain/config/genesis.json | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
 
@@ -72,10 +72,10 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-demo-onechaind add-genesis-account $KEY 100000000000000000000000000aphoton --keyring-backend $KEYRING
+demo-onechaind add-genesis-account $KEY 100000000000000000000000000ahihi --keyring-backend $KEYRING
 
 # Sign genesis transaction
-demo-onechaind gentx $KEY 1000000000000000000000aphoton --keyring-backend $KEYRING --chain-id $CHAINID
+demo-onechaind gentx $KEY 1000000000000000000000ahihi --keyring-backend $KEYRING --chain-id $CHAINID
 
 # Collect genesis tx
 demo-onechaind collect-gentxs
@@ -88,4 +88,4 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-demo-onechaind start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aphoton --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
+demo-onechaind start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001ahihi --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
