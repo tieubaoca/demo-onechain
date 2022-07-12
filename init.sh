@@ -11,6 +11,10 @@ LOGLEVEL="info"
 TRACE="--trace"
 # TRACE=""
 
+ETH_GENESIS_ACCOUNTS=$(cat ./genesis/BUSD/bytecode.json | jq '.evm_account' -r)
+AUTH_GENESIS_ACCOUNTS=$(cat ./genesis/BUSD/bytecode.json | jq '.auth_account' -r)
+
+
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
@@ -21,6 +25,8 @@ go install ./...
 
 demo-onechaind config keyring-backend $KEYRING
 demo-onechaind config chain-id $CHAINID
+
+
 
 # if $KEY exists it should be deleted
 demo-onechaind keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
@@ -34,6 +40,12 @@ cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["crisis"]["constan
 cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
 cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
 cat $HOME/.demo-onechain/config/genesis.json | jq '.app_state["evm"]["params"]["evm_denom"]="ahihi"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+
+cat $HOME/.demo-onechain/config/genesis.json | jq -r --argjson ETH_GENESIS_ACCOUNTS "$ETH_GENESIS_ACCOUNTS" '.app_state["evm"]["accounts"] += [$ETH_GENESIS_ACCOUNTS]' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+cat $HOME/.demo-onechain/config/genesis.json | jq -r --argjson AUTH_GENESIS_ACCOUNTS "$AUTH_GENESIS_ACCOUNTS" '.app_state["auth"]["accounts"] += [$AUTH_GENESIS_ACCOUNTS]' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
+
+
+
 # increase block time (?)
 cat $HOME/.demo-onechain/config/genesis.json | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $HOME/.demo-onechain/config/tmp_genesis.json && mv $HOME/.demo-onechain/config/tmp_genesis.json $HOME/.demo-onechain/config/genesis.json
 
