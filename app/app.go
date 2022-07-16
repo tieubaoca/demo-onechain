@@ -94,18 +94,18 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/tharsis/ethermint/client/docs/statik"
+	_ "github.com/evmos/ethermint/client/docs/statik"
 
-	"github.com/tharsis/ethermint/app/ante"
-	srvflags "github.com/tharsis/ethermint/server/flags"
-	ethermint "github.com/tharsis/ethermint/types"
-	"github.com/tharsis/ethermint/x/evm"
-	evmrest "github.com/tharsis/ethermint/x/evm/client/rest"
-	evmkeeper "github.com/tharsis/ethermint/x/evm/keeper"
-	evmtypes "github.com/tharsis/ethermint/x/evm/types"
-	"github.com/tharsis/ethermint/x/feemarket"
-	feemarketkeeper "github.com/tharsis/ethermint/x/feemarket/keeper"
-	feemarkettypes "github.com/tharsis/ethermint/x/feemarket/types"
+	"github.com/evmos/ethermint/app/ante"
+	srvflags "github.com/evmos/ethermint/server/flags"
+	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/x/evm"
+	evmrest "github.com/evmos/ethermint/x/evm/client/rest"
+	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
+	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"github.com/evmos/ethermint/x/feemarket"
+	feemarketkeeper "github.com/evmos/ethermint/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
 
 	citizenmodule "demo-onechain/x/citizen"
 	citizenmodulekeeper "demo-onechain/x/citizen/keeper"
@@ -117,25 +117,6 @@ const (
 	AccountAddressPrefix = "onechain"
 	Name                 = "demo-onechain"
 )
-
-// // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
-
-// func getGovProposalHandlers() []govclient.ProposalHandler {
-// 	var govProposalHandlers []govclient.ProposalHandler
-// 	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
-
-// 	govProposalHandlers = append(govProposalHandlers,
-// 		paramsclient.ProposalHandler,
-// 		distrclient.ProposalHandler,
-// 		upgradeclient.ProposalHandler,
-// 		upgradeclient.CancelProposalHandler,
-// 		ibcclientclient.UpdateClientProposalHandler,
-// 		ibcclientclient.UpgradeProposalHandler,
-// 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
-// 	)
-
-// 	return govProposalHandlers
-// }
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -194,8 +175,8 @@ var (
 )
 
 var (
-	_ servertypes.Application = (*App)(nil)
-	_ simapp.App              = (*App)(nil)
+	// _ servertypes.Application = (*App)(nil)
+	_ simapp.App = (*App)(nil)
 	// _ ibctesting.TestingApp   = (*App)(nil)
 )
 
@@ -297,7 +278,8 @@ func New(
 		citizenmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
-	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey)
+	// Add the EVM transient store key
+	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
 	// tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
 
@@ -424,9 +406,14 @@ func New(
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
+	// // Create Ethermint keepers
+	// app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
+	// 	appCodec, keys[feemarkettypes.StoreKey], app.GetSubspace(feemarkettypes.ModuleName),
+	// )
+
 	// Create Ethermint keepers
 	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
-		appCodec, keys[feemarkettypes.StoreKey], app.GetSubspace(feemarkettypes.ModuleName),
+		appCodec, app.GetSubspace(feemarkettypes.ModuleName), keys[feemarkettypes.StoreKey], tkeys[feemarkettypes.TransientKey],
 	)
 
 	// Create Ethermint keepers
