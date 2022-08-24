@@ -11,11 +11,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	evmenc "github.com/evmos/ethermint/encoding"
 	"github.com/ignite-hq/cli/ignite/pkg/cosmoscmd"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	evmenc "github.com/tharsis/ethermint/encoding"
 )
 
 func init() {
